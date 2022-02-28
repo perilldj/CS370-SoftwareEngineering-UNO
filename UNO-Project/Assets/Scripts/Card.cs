@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class CardTypes {
 
+    public const int NONE = 18;
+
     /* Card Classes */
     public const int BLUE_CARD   = 0,
                      RED_CARD    = 1,
@@ -41,10 +43,19 @@ public class Card {
 
     public Deck deck;
 
+    private Vector2 position;
+    private int layer;
+    private float scale = 0.3f;
+
     public void createOnScreenCard() {
 
         Texture2D class_texture = deck.getTexture(cardClass);
-        Texture2D type_texture = deck.getTexture(cardType);
+        Texture2D type_texture;
+
+        if(cardClass == CardTypes.WILD_CARD || cardClass == CardTypes.PLUS_FOUR_CARD)
+            type_texture = deck.getTexture(CardTypes.NONE);
+        else
+            type_texture = deck.getTexture(cardType);
 
         class_object = new GameObject();
         type_object = new GameObject();
@@ -56,6 +67,34 @@ public class Card {
         type_sprite.sprite = Sprite.Create(type_texture, new Rect(0.0f, 0.0f, type_texture.width, type_texture.height), new Vector2(0.5f, 0.5f), 100.0f);
 
         Debug.Log(class_sprite);
+
+        setCardScale(scale);
+        setCardPos(Vector2.zero);
+
+    }
+
+    public void setCardPos(Vector2 pos) {
+        position = pos;
+        if(class_object != null && type_object != null) {
+            class_object.transform.position = new Vector3(position.x, position.y, 0.01f * -layer);
+            type_object.transform.position = new Vector3(position.x, position.y, 0.01f * -layer - 0.001f);
+        }
+    }
+
+    public void setLayer(int val) {
+        layer = val;
+        if(class_object != null && type_object != null) {
+            class_object.transform.position = new Vector3(position.x, position.y, 0.01f * -layer);
+            type_object.transform.position = new Vector3(position.x, position.y, 0.01f * -layer - 0.001f);
+        }
+    }
+
+    public void setCardScale(float val) {
+        scale = val;
+        if(class_object != null && type_object != null) {
+            class_object.transform.localScale = new Vector3(scale, scale, 1);
+            type_object.transform.localScale = new Vector3(scale, scale, 1);
+        }
     }
 
     public void setCardClass(int cClass) {

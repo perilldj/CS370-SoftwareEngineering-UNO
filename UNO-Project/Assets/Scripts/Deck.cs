@@ -9,6 +9,7 @@ public class Deck : MonoBehaviour {
     private List<Texture2D> cardSprites;
 
     private Queue<Card> deck = new Queue<Card>();
+    private Hand hand = new Hand();
 
     void Start() {
         initializeDeck();
@@ -20,7 +21,7 @@ public class Deck : MonoBehaviour {
         List<Card> shufledDeck;
 
         for(int i = 0; i < 6; i++) {
-            for(int j = 1; j < 13; j++) {
+            for(int j = 6; j < 18; j++) {
                 Card newCard = new Card();
                 newCard.setCardClass(i);
                 newCard.setCardType(j);
@@ -43,8 +44,7 @@ public class Deck : MonoBehaviour {
     }
 
     void OnMouseDown() {
-        Debug.Log("AAA");
-        deck.Dequeue().createOnScreenCard();
+        hand.addCard(deck.Dequeue());
     }
 
 }
