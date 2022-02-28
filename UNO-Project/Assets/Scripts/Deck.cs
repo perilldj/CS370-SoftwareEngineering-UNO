@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour {
    
-    private Queue<Card> deck;
+    [SerializeField]
+    private List<Texture2D> cardSprites;
+
+    private Queue<Card> deck = new Queue<Card>();
 
     void Start() {
         initializeDeck();
@@ -14,13 +17,14 @@ public class Deck : MonoBehaviour {
     void initializeDeck() {
 
         List<Card> orderedDeck = new List<Card>();
-        List<Card> shufledDeck = new List<Card>();
+        List<Card> shufledDeck;
 
         for(int i = 0; i < 6; i++) {
             for(int j = 1; j < 13; j++) {
                 Card newCard = new Card();
                 newCard.setCardClass(i);
-                newCard.setCardType(i);
+                newCard.setCardType(j);
+                newCard.deck = this;
                 orderedDeck.Add(newCard);
             }
         }
@@ -30,9 +34,13 @@ public class Deck : MonoBehaviour {
 
         foreach(Card card in shufledDeck) {
             deck.Enqueue(card);
-            Debug.Log("Class: " + card.getCardClass() + " Type: " + card.getCardType());
+            card.createOnScreenCard();
         }
 
+    }
+
+     public Texture2D getTexture(int index) {
+        return cardSprites[index];
     }
 
     void OnMouseDown() {
