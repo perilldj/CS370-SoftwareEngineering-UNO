@@ -34,7 +34,6 @@ public class Deck : MonoBehaviour {
 
         foreach(Card card in shufledDeck) {
             deck.Enqueue(card);
-            card.createOnScreenCard();
         }
 
     }
@@ -44,7 +43,8 @@ public class Deck : MonoBehaviour {
     }
 
     void OnMouseDown() {
-        Debug.Log("Sprite Clicked");
+        Debug.Log("AAA");
+        deck.Dequeue().createOnScreenCard();
     }
 
 }

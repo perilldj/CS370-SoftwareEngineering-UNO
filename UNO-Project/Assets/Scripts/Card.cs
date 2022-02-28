@@ -30,8 +30,11 @@ public static class CardTypes {
 
 public class Card {
     
-    private Sprite class_sprite;
-    private Sprite type_sprite;
+    private SpriteRenderer class_sprite;
+    private SpriteRenderer type_sprite;
+
+    private GameObject class_object;
+    private GameObject type_object;
 
     private int cardClass;
     private int cardType;
@@ -39,10 +42,19 @@ public class Card {
     public Deck deck;
 
     public void createOnScreenCard() {
+
         Texture2D class_texture = deck.getTexture(cardClass);
         Texture2D type_texture = deck.getTexture(cardType);
-        class_sprite = Sprite.Create(class_texture, new Rect(0.0f, 0.0f, class_texture.width, class_texture.height), new Vector2(0.5f, 0.5f), 100.0f);
-        type_sprite = Sprite.Create(type_texture, new Rect(0.0f, 0.0f, type_texture.width, type_texture.height), new Vector2(0.5f, 0.5f), 101.0f);
+
+        class_object = new GameObject();
+        type_object = new GameObject();
+
+        class_sprite = class_object.AddComponent<SpriteRenderer>() as SpriteRenderer;
+        type_sprite = type_object.AddComponent<SpriteRenderer>() as SpriteRenderer;
+
+        class_sprite.sprite = Sprite.Create(class_texture, new Rect(0.0f, 0.0f, class_texture.width, class_texture.height), new Vector2(0.5f, 0.5f), 100.0f);
+        type_sprite.sprite = Sprite.Create(type_texture, new Rect(0.0f, 0.0f, type_texture.width, type_texture.height), new Vector2(0.5f, 0.5f), 100.0f);
+
         Debug.Log(class_sprite);
     }
 
