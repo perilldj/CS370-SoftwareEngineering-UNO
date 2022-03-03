@@ -7,7 +7,7 @@ using UnityEngine;
     Description: A hand of cards for a player. It contains to Vector2 positions for cards to be between on screen
                  Also contains a list of cards that go on screen. Designed for multiple to exist in game
 
-    Functions: addCard(Card card);
+    Methods: addCard(Card card);
 
     Needed additions: Constructor to set the two Vector2s.
                       Ability to remove a specific card from hand.
@@ -29,11 +29,9 @@ public class Hand {
     int handSize = 0;
 
     /*
-        Function: addCard(Card card)
+        Method: addCard(Card card)
         Description: When called, the given card is added to the hand, it will also create an on-screen card representation and sets it
                      to the correct position by calling createOnScreenCard() and ajustCardPositions().
-
-        Author: perilldj
     */
 
     public void addCard(Card card) {
@@ -44,14 +42,12 @@ public class Hand {
     }
 
     /*
-        Function: ajustCardPositions()
+        Method: ajustCardPositions()
         Description: This function is called internally when addCard(Card card) is called. It updates the positions
                      of every card in your hand so they are evenly placed between two points.
 
         Known issues: The algorithm isn't entirely complete it, it just uses two arbitrary horizontal points
                       instead of the two Vector2s created for the hand.
-
-        Author: perilldj
     */
 
     private void ajustCardPositions() {
