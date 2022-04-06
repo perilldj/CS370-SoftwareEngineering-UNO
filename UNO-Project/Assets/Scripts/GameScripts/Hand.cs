@@ -23,8 +23,8 @@ public class Hand {
     private List<Card> cards = new List<Card>();
 
     /* Both vectors create a line for the cards to be between */
-    private Vector2 p1 = new Vector2(-4.0f, -2.0f);
-    private Vector2 p2 = new Vector2(4.0f, -2.0f);
+    private Vector2 p1 = new Vector2(-7.5f, -3.5f);
+    private Vector2 p2 = new Vector2(7.5f, -3.5f);
 
     int handSize = 0;
 
@@ -51,12 +51,12 @@ public class Hand {
     */
 
     private void ajustCardPositions() {
-        float spacing = (1.0f / (float)(handSize + 1)) * 8.0f;  //Calculates horizontal spacing
-        float currentX = -4.0f;
+        float spacing = (1.0f / (float)(handSize + 1)) * 15.0f;  //Calculates horizontal spacing
+        float currentX = -7.5f;
         int count = 0;
         foreach(Card card in cards) {                           //Loops through every card in hand
             currentX += spacing;                                //Increments x position by calculated spacing
-            card.setCardPos(new Vector2(currentX, -2.0f));      //Sets card's calculated position
+            card.setCardPos(new Vector2(currentX, -3.5f));      //Sets card's calculated position
             card.setLayer(count);                               //Increments render layer (z coordinate)
             count++;                                            //Increments count
         }
