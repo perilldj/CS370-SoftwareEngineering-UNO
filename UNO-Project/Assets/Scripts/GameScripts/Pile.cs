@@ -25,7 +25,11 @@ public class Pile {
        Description: Initializes visual component and sets position of pile
     */ 
 
-    public Pile(Vector2 pos) {
+    public Pile(Vector2 pos, Deck deck) {
+        topCard = new Card(-1);
+        topCard.deck = deck;
+        topCard.setCardClass(currentClass);
+        topCard.setCardType(currentType);
         topCard.createOnScreenCard();
         topCard.setCardPos(pos);
     }

@@ -63,12 +63,18 @@ public class Card {
     private GameObject class_object;
     private GameObject type_object;
 
+    private Script cardCom;
+
     //IDs for card class and type
     private int cardClass;
     private int cardType;
 
+    private int id;
+
     //Reference to the deck (To get card textures)
     public Deck deck;
+
+    public Hand currentHand = null;
 
     //On screen data
     private Vector2 position;
@@ -79,6 +85,10 @@ public class Card {
         Method: createOnScreenCard()
         Description: Creates a visual card on-screen thats tied to this class.
     */
+
+    public Card(int id) {
+        this.id = id;
+    }
 
     public void createOnScreenCard() {
 
@@ -108,6 +118,11 @@ public class Card {
         setCardScale(scale);
         setCardPos(Vector2.zero);
 
+    }
+
+    public void destroy() {
+        UnityEngine.Object.Destroy(class_object);
+        UnityEngine.Object.Destroy(type_object);
     }
 
     /*
@@ -184,6 +199,10 @@ public class Card {
 
     public int getCardType() {
         return cardType;
+    }
+
+    public int getCardID() {
+        return id;
     }
 
 }

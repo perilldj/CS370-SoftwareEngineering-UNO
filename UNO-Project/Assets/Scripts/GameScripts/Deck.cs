@@ -23,6 +23,9 @@ public class Deck : MonoBehaviour {
 
     private Queue<Card> deck = new Queue<Card>();   //Queue for deck to be stored
     private Hand hand = new Hand();                 //Reference to player's hand (A better way for multiple hands needs to be made)
+    public Pile pile;
+
+    private int idCount = 0;
 
     /*
         Method: Start()
@@ -31,6 +34,7 @@ public class Deck : MonoBehaviour {
 
     void Start() {
         initializeDeck();
+        hand.deck = this;
     }
 
     /*
@@ -48,6 +52,8 @@ public class Deck : MonoBehaviour {
     */
 
     private void initializeDeck() {
+
+        pile = new Pile(new Vector2(1.0f, 0.0f), this);
 
         List<Card> orderedDeck = new List<Card>();
         List<Card> shufledDeck;
@@ -86,7 +92,8 @@ public class Deck : MonoBehaviour {
     }
 
     private void addCard(List<Card> deck, int cardClass, int cardType) {
-        Card newCard = new Card();
+        Card newCard = new Card(idCount);
+        idCount++;
         newCard.setCardClass(cardClass);
         newCard.setCardType(cardType);
         newCard.deck = this;

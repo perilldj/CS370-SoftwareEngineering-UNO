@@ -26,6 +26,8 @@ public class Hand {
     private Vector2 p1 = new Vector2(-7.5f, -3.5f);
     private Vector2 p2 = new Vector2(7.5f, -3.5f);
 
+    public Deck deck;
+
     int handSize = 0;
 
     /*
@@ -39,6 +41,11 @@ public class Hand {
         cards.Add(card);            //Add card to hand
         card.createOnScreenCard();  //Add card to screen
         ajustCardPositions();       //Update positions of the cards
+    }
+
+    public void removeCard(int index) {
+        cards[index].destroy();
+        cards.RemoveAt(index);
     }
 
     /*
@@ -60,6 +67,24 @@ public class Hand {
             card.setLayer(count);                               //Increments render layer (z coordinate)
             count++;                                            //Increments count
         }
+    }
+
+    public void playCard(int cardID) {
+
+        Card card = null;
+        int index = 0;
+        for(int i = 0; i < handSize; i++) {
+            card = cards[i];
+            index = i;
+            if(card.getCardID() == cardID)
+                break;
+        }
+
+        if(deck.pile.attemptMove(card)) {
+            removeCard(index);
+            handSize--;
+        }
+
     }
 
 }
