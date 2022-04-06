@@ -72,7 +72,7 @@ public class Card {
 
     //On screen data
     private Vector2 position;
-    private int layer;
+    private int layer = 0;
     private float scale = 0.3f;
 
     /*
