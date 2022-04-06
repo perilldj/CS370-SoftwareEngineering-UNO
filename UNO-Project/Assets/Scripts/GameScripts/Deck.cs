@@ -52,14 +52,16 @@ public class Deck : MonoBehaviour {
         List<Card> orderedDeck = new List<Card>();
         List<Card> shufledDeck;
 
-        for(int i = 0; i < 6; i++) {        //This doesn't create the cards in correct proportions, way to many wild and +4s
-            for(int j = 6; j < 18; j++) {   //I need to rewrite this so it creates all the cards in the correct proportions -perilldj
-                Card newCard = new Card(); 
-                newCard.setCardClass(i);
-                newCard.setCardType(j);
-                newCard.deck = this;
-                orderedDeck.Add(newCard);
+        for(int i = 0; i < 4; i++) {
+
+            addCard(orderedDeck, CardTypes.WILD_CARD, 18);
+            addCard(orderedDeck, CardTypes.PLUS_FOUR_CARD, 18);
+
+            for(int j = 6; j < 18; j++) {
+                addCard(orderedDeck, i, j);
+                addCard(orderedDeck, i, j);
             }
+
         }
 
         /* Shufles the deck */
@@ -81,6 +83,14 @@ public class Deck : MonoBehaviour {
 
     private void OnMouseDown() {
         hand.addCard(deck.Dequeue());
+    }
+
+    private void addCard(List<Card> deck, int cardClass, int cardType) {
+        Card newCard = new Card();
+        newCard.setCardClass(cardClass);
+        newCard.setCardType(cardType);
+        newCard.deck = this;
+        deck.Add(newCard);
     }
 
 }

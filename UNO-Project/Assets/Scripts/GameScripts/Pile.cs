@@ -22,6 +22,7 @@ public class Pile {
         }
 
         if(card.getCardType() == currentType) {
+            
             setTopCard(card);
             currentClass = card.getCardClass();
 
