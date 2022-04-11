@@ -6,7 +6,7 @@ public class SpinDirectionController : MonoBehaviour
 {
 
     private const float SPIN_SPEED = 50.0f;
-    private bool isSpinningClockwise = true;
+    private bool isSpinningClockwise = false;
 
     public void spinClockwise() {
         if(!isSpinningClockwise) {
@@ -23,11 +23,12 @@ public class SpinDirectionController : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start() { }
+    void Start() { 
+        //spinClockwise();
+    }
 
     // Update is called once per frame
     void Update() {
-        Debug.Log(isSpinningClockwise);
         if(isSpinningClockwise)
             transform.Rotate(0.0f, 0.0f, SPIN_SPEED * Time.deltaTime);
         else

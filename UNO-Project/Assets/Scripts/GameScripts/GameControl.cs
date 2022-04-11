@@ -29,14 +29,12 @@ public class GameControl : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         Instantiate(deck);
-        Instantiate(directionIndicatorObject);
+        directionIndicatorObject = Instantiate(directionIndicatorObject);
         directionController = directionIndicatorObject.GetComponent<SpinDirectionController>();
-        Debug.Log(directionController);
-        directionController.spinCounterClockwise();
+        directionController.spinClockwise();
     }
 
     // Update is called once per frame
     void Update() {
-        
     }
 }
