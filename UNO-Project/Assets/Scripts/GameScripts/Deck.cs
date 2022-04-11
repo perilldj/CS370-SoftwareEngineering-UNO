@@ -21,6 +21,9 @@ public class Deck : MonoBehaviour {
     [SerializeField] /* List to load in all sprites */
     private List<Texture2D> cardSprites;
 
+    [SerializeField]
+    private GameObject cardPrefab;
+
     private Queue<Card> deck = new Queue<Card>();   //Queue for deck to be stored
     private Hand hand = new Hand();                 //Reference to player's hand (A better way for multiple hands needs to be made)
     public Pile pile;
@@ -53,7 +56,7 @@ public class Deck : MonoBehaviour {
 
     private void initializeDeck() {
 
-        pile = new Pile(new Vector2(1.0f, 0.0f), this);
+        pile = new Pile(cardPrefab, new Vector2(1.0f, 0.0f), this);
 
         List<Card> orderedDeck = new List<Card>();
         List<Card> shufledDeck;
@@ -92,7 +95,7 @@ public class Deck : MonoBehaviour {
     }
 
     private void addCard(List<Card> deck, int cardClass, int cardType) {
-        Card newCard = new Card(idCount);
+        Card newCard = new Card(cardPrefab, null, idCount);
         idCount++;
         newCard.setCardClass(cardClass);
         newCard.setCardType(cardType);

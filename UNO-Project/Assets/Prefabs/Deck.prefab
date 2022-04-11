@@ -116,6 +116,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 8e5001e407840b44aa8af5f57b615905, type: 3}
   - {fileID: 2800000, guid: 8f5fa96067fa26e418cc88643884aa27, type: 3}
   - {fileID: 2800000, guid: 2e364c31ec200df4cadb665e62a5f007, type: 3}
+  cardPrefab: {fileID: 3141082209676584502, guid: b9786ce4a28726243a5d913d80284d58, type: 3}
 --- !u!61 &151214507652611856
 BoxCollider2D:
   m_ObjectHideFlags: 0
