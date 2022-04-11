@@ -63,8 +63,6 @@ public class Card {
     private GameObject class_object;
     private GameObject type_object;
 
-    private Script cardCom;
-
     //IDs for card class and type
     private int cardClass;
     private int cardType;

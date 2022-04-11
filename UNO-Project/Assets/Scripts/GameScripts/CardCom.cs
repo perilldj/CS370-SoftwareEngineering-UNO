@@ -8,7 +8,6 @@ public class CardCom : MonoBehaviour {
     private Card card;
 
     private void OnMouseDown() {
-        hand.playCard(card);
     }
 
 }
