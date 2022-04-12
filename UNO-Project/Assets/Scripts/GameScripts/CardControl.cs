@@ -57,7 +57,8 @@ public class CardControl : MonoBehaviour {
     }
 
     private void OnMouseDown() {
-
+        Debug.Log("YO");
+        owningCard.onCardClick();
     }
 
 }

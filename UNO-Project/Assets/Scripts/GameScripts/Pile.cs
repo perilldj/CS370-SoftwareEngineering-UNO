@@ -18,6 +18,7 @@ public class Pile {
 
     private Card topCard;
     private CardControl topCardControl;
+    private Vector2 pilePos;
     private int currentClass = CardTypes.BLUE_CARD;
     private int currentType = CardTypes.ONE_CARD;
 
@@ -28,6 +29,7 @@ public class Pile {
 
     public Pile(GameObject cardPrefab, Vector2 pos, Deck deck) {
         topCard = new Card(cardPrefab, null, -1);
+        this.pilePos = pos;
         topCard.deck = deck;
         topCard.setCardClass(currentClass);
         topCard.setCardType(currentType);
@@ -101,8 +103,10 @@ public class Pile {
     */
 
     private void setTopCard(Card card) {
-        topCard.setCardClass(card.getCardClass());
-        topCard.setCardType(card.getCardType());
+        topCard.destroy();
+        topCard = card;
+        topCardControl = card.getCardController();
+        topCard.setCardPos(pilePos);
     }
 
 }

@@ -95,7 +95,7 @@ public class Deck : MonoBehaviour {
     }
 
     private void addCard(List<Card> deck, int cardClass, int cardType) {
-        Card newCard = new Card(cardPrefab, null, idCount);
+        Card newCard = new Card(cardPrefab, hand, idCount);
         idCount++;
         newCard.setCardClass(cardClass);
         newCard.setCardType(cardType);

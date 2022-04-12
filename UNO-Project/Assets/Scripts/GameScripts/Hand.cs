@@ -44,7 +44,6 @@ public class Hand {
     }
 
     public void removeCard(int index) {
-        cards[index].destroy();
         cards.RemoveAt(index);
     }
 
@@ -83,6 +82,7 @@ public class Hand {
         if(deck.pile.attemptMove(card)) {
             removeCard(index);
             handSize--;
+            ajustCardPositions();
         }
 
     }

@@ -81,6 +81,8 @@ public class Card {
     private int layer = 0;
     private float scale = 0.3f;
 
+    private CardControl cardControl = null;
+
     /*
         Method: createOnScreenCard()
         Description: Creates a visual card on-screen thats tied to this class.
@@ -106,7 +108,7 @@ public class Card {
 
         card = GameObject.Instantiate(card);
 
-        CardControl cardControl = card.GetComponent<CardControl>();
+        cardControl = card.GetComponent<CardControl>();
         cardControl.setOwningCard(this);
 
         cardClassObject = card.gameObject.transform.GetChild(0).gameObject;
@@ -125,6 +127,12 @@ public class Card {
 
     }
 
+    public void onCardClick() {
+        if(currentHand != null) {
+            currentHand.playCard(id);
+        }
+    }
+
     public void destroy() {
         GameObject.Destroy(card);
         GameObject.Destroy(cardClassObject);
@@ -138,6 +146,10 @@ public class Card {
     public void setCardPos(Vector2 pos) {
         position = pos;
         card.transform.position = new Vector3(pos.x, pos.y, layer * -0.02f);
+    }
+
+    public CardControl getCardController() {
+        return cardControl;
     }
 
     public Vector2 getCardPos() {
