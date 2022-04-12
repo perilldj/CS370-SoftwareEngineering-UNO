@@ -12,10 +12,10 @@ public class CardControl : MonoBehaviour {
     private float direction = -1.0f;
     private float currentRiseHeight = 0;
     private bool canRise = true;
+    private bool canPlay = true;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         
     }
 
@@ -56,9 +56,13 @@ public class CardControl : MonoBehaviour {
         canRise = val;
     }
 
+    public void setCanPlay(bool val) {
+        canPlay = val;
+    }
+
     private void OnMouseDown() {
-        Debug.Log("YO");
-        owningCard.onCardClick();
+        if(canPlay)
+            owningCard.onCardClick();
     }
 
 }

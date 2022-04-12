@@ -37,6 +37,7 @@ public class Pile {
         topCard.setCardPos(pos);
         topCardControl = topCard.getCardObject().GetComponent<CardControl>();
         topCardControl.setCanRise(false);
+        topCardControl.setCanPlay(false);
     }
 
     /*
@@ -107,6 +108,8 @@ public class Pile {
         topCard = card;
         topCardControl = card.getCardController();
         topCard.setCardPos(pilePos);
+        topCardControl.setCanRise(false);
+        topCardControl.setCanPlay(false);
     }
 
 }
