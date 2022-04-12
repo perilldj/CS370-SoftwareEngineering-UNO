@@ -25,19 +25,13 @@ public class Deck : MonoBehaviour {
     private GameObject cardPrefab;
 
     private Queue<Card> deck = new Queue<Card>();   //Queue for deck to be stored
-    private Hand hand = new Hand();                 //Reference to player's hand (A better way for multiple hands needs to be made)
+    public Hand hand;                              //Reference to player's hand (A better way for multiple hands needs to be made)
     public Pile pile;
 
     private int idCount = 0;
 
-    /*
-        Method: Start()
-        Description: Initializes Deck by calling initializeDeckFunction
-    */
-
     void Start() {
-        initializeDeck();
-        hand.deck = this;
+
     }
 
     /*
@@ -54,9 +48,7 @@ public class Deck : MonoBehaviour {
         Description: Creates and shuffles a deck into the deck Queue.
     */
 
-    private void initializeDeck() {
-
-        pile = new Pile(cardPrefab, new Vector2(1.0f, 0.0f), this);
+    public void initializeDeck() {
 
         List<Card> orderedDeck = new List<Card>();
         List<Card> shufledDeck;
@@ -91,7 +83,11 @@ public class Deck : MonoBehaviour {
     */
 
     private void OnMouseDown() {
-        hand.addCard(deck.Dequeue());
+        hand.addCard(drawCard());
+    }
+
+    public Card drawCard() {
+        return deck.Dequeue();
     }
 
     private void addCard(List<Card> deck, int cardClass, int cardType) {
@@ -101,6 +97,10 @@ public class Deck : MonoBehaviour {
         newCard.setCardType(cardType);
         newCard.deck = this;
         deck.Add(newCard);
+    }
+
+    public void setDeckPos(Vector2 pos) {
+        transform.position = pos;
     }
 
 }

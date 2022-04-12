@@ -13,6 +13,7 @@ public class CardControl : MonoBehaviour {
     private float currentRiseHeight = 0;
     private bool canRise = true;
     private bool canPlay = true;
+    private bool lockHover = false;
 
     // Start is called before the first frame update
     void Start() {
@@ -45,11 +46,13 @@ public class CardControl : MonoBehaviour {
     }
 
     public void setIsHovering(bool val) {
-        isHovering = val;
-        if(isHovering)
-            direction = 1.0f;
-        else
-            direction = -1.0f;
+        if(!lockHover) {
+            isHovering = val;
+             if(isHovering)
+                 direction = 1.0f;
+            else
+                direction = -1.0f;
+        }
     }
 
     public void setCanRise(bool val) {
@@ -63,6 +66,11 @@ public class CardControl : MonoBehaviour {
     private void OnMouseDown() {
         if(canPlay)
             owningCard.onCardClick();
+    }
+
+    public void stopHover() {
+        direction = -1.0f;
+        lockHover = true;
     }
 
 }

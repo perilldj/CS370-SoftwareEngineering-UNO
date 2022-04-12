@@ -27,17 +27,10 @@ public class Pile {
        Description: Initializes visual component and sets position of pile
     */ 
 
-    public Pile(GameObject cardPrefab, Vector2 pos, Deck deck) {
-        topCard = new Card(cardPrefab, null, -1);
+    public Pile(Vector2 pos, Card card) {
         this.pilePos = pos;
-        topCard.deck = deck;
-        topCard.setCardClass(currentClass);
-        topCard.setCardType(currentType);
-        topCard.createOnScreenCard();
-        topCard.setCardPos(pos);
-        topCardControl = topCard.getCardObject().GetComponent<CardControl>();
-        topCardControl.setCanRise(false);
-        topCardControl.setCanPlay(false);
+        card.createOnScreenCard();
+        setTopCard(card);
     }
 
     /*
@@ -52,8 +45,6 @@ public class Pile {
         /* If card is a wild card */
         if(card.getCardType() == CardTypes.WILD_CARD) {
             setTopCard(card);
-            currentClass = card.getCardClass();
-            currentType = card.getCardType();
             //Do wild
             return true;
         }
@@ -61,8 +52,6 @@ public class Pile {
         /* If card is a +4 wild card */
         if(card.getCardType() == CardTypes.PLUS_FOUR_CARD) {
             setTopCard(card);
-            currentClass = card.getCardClass();
-            currentType = card.getCardType();
             //Do +4 wild
             return true;
         }
@@ -70,7 +59,6 @@ public class Pile {
         /* If legal by a non special card class */
         if(card.getCardClass() == currentClass) {
             setTopCard(card);
-            currentType = card.getCardType();
             return true;
         }
 
@@ -78,7 +66,6 @@ public class Pile {
         if(card.getCardType() == currentType) {
 
             setTopCard(card);
-            currentClass = card.getCardClass();
 
             /* Checks for special card types and performs their functions */
             switch(card.getCardType()) {
@@ -104,12 +91,15 @@ public class Pile {
     */
 
     private void setTopCard(Card card) {
-        topCard.destroy();
+        currentClass = card.getCardClass();
+        currentType = card.getCardType();
+        if(topCard != null)
+            topCard.destroy();
         topCard = card;
-        topCardControl = card.getCardController();
         topCard.setCardPos(pilePos);
-        topCardControl.setCanRise(false);
+        topCardControl = card.getCardController();
         topCardControl.setCanPlay(false);
+        topCardControl.stopHover();
     }
 
 }

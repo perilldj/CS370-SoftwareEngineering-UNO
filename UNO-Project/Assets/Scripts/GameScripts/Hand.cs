@@ -26,7 +26,7 @@ public class Hand {
     private Vector2 p1 = new Vector2(-7.5f, -3.5f);
     private Vector2 p2 = new Vector2(7.5f, -3.5f);
 
-    public Deck deck;
+    public Pile pile;
 
     int handSize = 0;
 
@@ -79,7 +79,7 @@ public class Hand {
                 break;
         }
 
-        if(deck.pile.attemptMove(card)) {
+        if(pile.attemptMove(card)) {
             removeCard(index);
             handSize--;
             ajustCardPositions();

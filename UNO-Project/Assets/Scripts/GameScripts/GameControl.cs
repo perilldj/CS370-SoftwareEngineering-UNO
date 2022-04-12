@@ -5,6 +5,9 @@ using UnityEngine;
 public class GameControl : MonoBehaviour {
 
     [SerializeField]
+    private GameObject cardPrefab;
+
+    [SerializeField]
     private GameObject directionIndicatorObject;
     private SpinDirectionController directionController;
 
@@ -16,10 +19,11 @@ public class GameControl : MonoBehaviour {
 
     [SerializeField]
     private GameObject deck;
-    private Vector2 deckLoc = new Vector2(1.0f, 0.0f); // I hate hard coding positions like this, but it will do for now
+    private Deck deckScript;
+    private Vector2 deckPos = new Vector2(-1.0f, 0.0f); // I hate hard coding positions like this, but it will do for now
 
     private Pile pile;
-    private Vector2 pileLoc = new Vector2(-1.0f, 0.0f);
+    private Vector2 pileLoc = new Vector2(1.0f, 0.0f);
 
     private Hand playerHand;
 
@@ -30,10 +34,23 @@ public class GameControl : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        Instantiate(deck);
+
+        deck = Instantiate(deck);
+        deckScript = deck.GetComponent<Deck>();
+
+        playerHand = new Hand();
+        deckScript.hand = playerHand;
+
+        deckScript.initializeDeck();
+
+        deckScript.setDeckPos(deckPos);
         directionIndicatorObject = Instantiate(directionIndicatorObject);
         directionController = directionIndicatorObject.GetComponent<SpinDirectionController>();
         directionController.spinClockwise();
+
+        pile = new Pile(pileLoc, deckScript.drawCard());
+        playerHand.pile = pile;
+
     }
 
     // Update is called once per frame
@@ -41,7 +58,7 @@ public class GameControl : MonoBehaviour {
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
-        if (hit) {;
+        if (hit) {
             GameObject selectedObject = hit.collider.gameObject;
             CardControl cardControl = selectedObject.GetComponent<CardControl>();
             if(cardControl != null) {
