@@ -26,6 +26,8 @@ public class GameControl : MonoBehaviour {
     private int opponentCount;
     private Hand[] enemyHands;
 
+    private CardControl currentCard = null;
+
     // Start is called before the first frame update
     void Start() {
         Instantiate(deck);
@@ -36,5 +38,25 @@ public class GameControl : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+
+                        Debug.Log(currentCard);
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
+        if (hit) {
+            //Debug.Log(hit.collider.gameObject.name);
+            GameObject selectedObject = hit.collider.gameObject;
+            CardControl cardControl = selectedObject.GetComponent<CardControl>();
+            if(cardControl != null) {
+                if(currentCard != null)
+                    currentCard.setIsHovering(false);
+                currentCard = cardControl;
+                cardControl.setIsHovering(true);
+            }
+        } else {
+            if(currentCard != null)
+                    currentCard.setIsHovering(false);
+        }
+
     }
 }

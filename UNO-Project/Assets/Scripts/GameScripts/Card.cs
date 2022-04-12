@@ -106,6 +106,9 @@ public class Card {
 
         card = GameObject.Instantiate(card);
 
+        CardControl cardControl = card.GetComponent<CardControl>();
+        cardControl.setOwningCard(this);
+
         cardClassObject = card.gameObject.transform.GetChild(0).gameObject;
         cardTypeObject = cardClassObject.gameObject.transform.GetChild(0).gameObject;
 
@@ -134,7 +137,11 @@ public class Card {
     */
     public void setCardPos(Vector2 pos) {
         position = pos;
-        card.transform.position = new Vector3(pos.x, pos.y, layer);
+        card.transform.position = new Vector3(pos.x, pos.y, layer * -0.01f);
+    }
+
+    public Vector2 getCardPos() {
+        return position;
     }
 
     /*
@@ -145,6 +152,10 @@ public class Card {
     public void setLayer(int val) {
         layer = val;
         card.transform.position = new Vector3(position.x, position.y, layer * -0.01f);
+    }
+
+    public float getCardZ() {
+        return (float)layer * -0.01f;
     }
 
     /*
