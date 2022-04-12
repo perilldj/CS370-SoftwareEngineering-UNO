@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029497eaf62d8634a9a7bb240900d70e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardPrefab: {fileID: 3141082209676584502, guid: b9786ce4a28726243a5d913d80284d58, type: 3}
   directionIndicatorObject: {fileID: 1080682237840129771, guid: dffa3c2c1ca3b8848865d67000dcb5f2, type: 3}
   backgroundController: {fileID: 0}
   soundController: {fileID: 0}
