@@ -17,6 +17,7 @@ using UnityEngine;
 public class Pile {
 
     private Card topCard;
+    private CardControl topCardControl;
     private int currentClass = CardTypes.BLUE_CARD;
     private int currentType = CardTypes.ONE_CARD;
 
@@ -32,6 +33,8 @@ public class Pile {
         topCard.setCardType(currentType);
         topCard.createOnScreenCard();
         topCard.setCardPos(pos);
+        topCardControl = topCard.getCardObject().GetComponent<CardControl>();
+        topCardControl.setCanRise(false);
     }
 
     /*

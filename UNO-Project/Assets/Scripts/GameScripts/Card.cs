@@ -137,7 +137,7 @@ public class Card {
     */
     public void setCardPos(Vector2 pos) {
         position = pos;
-        card.transform.position = new Vector3(pos.x, pos.y, layer * -0.01f);
+        card.transform.position = new Vector3(pos.x, pos.y, layer * -0.02f);
     }
 
     public Vector2 getCardPos() {
@@ -151,11 +151,11 @@ public class Card {
 
     public void setLayer(int val) {
         layer = val;
-        card.transform.position = new Vector3(position.x, position.y, layer * -0.01f);
+        card.transform.position = new Vector3(position.x, position.y, layer * -0.02f);
     }
 
     public float getCardZ() {
-        return (float)layer * -0.01f;
+        return (float)layer * -0.02f;
     }
 
     /*
@@ -213,6 +213,10 @@ public class Card {
 
     public int getCardID() {
         return id;
+    }
+
+    public GameObject getCardObject() {
+        return card;
     }
 
 }

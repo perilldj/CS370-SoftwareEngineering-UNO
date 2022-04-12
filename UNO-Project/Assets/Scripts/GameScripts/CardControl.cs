@@ -11,6 +11,7 @@ public class CardControl : MonoBehaviour {
     private const float MAX_RISE_HEIGHT = 0.35f;
     private float direction = -1.0f;
     private float currentRiseHeight = 0;
+    private bool canRise = true;
 
     // Start is called before the first frame update
     void Start()
@@ -21,15 +22,17 @@ public class CardControl : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
-        Vector2 pos = owningCard.getCardPos();
-        currentRiseHeight += (RISE_SPEED * Time.deltaTime * direction);
+        if(canRise) {
+            Vector2 pos = owningCard.getCardPos();
+            currentRiseHeight += (RISE_SPEED * Time.deltaTime * direction);
 
-        if(currentRiseHeight > MAX_RISE_HEIGHT)
-            currentRiseHeight = MAX_RISE_HEIGHT;
-        else if(currentRiseHeight < 0.0f)
-            currentRiseHeight = 0.0f;
+            if(currentRiseHeight > MAX_RISE_HEIGHT)
+                currentRiseHeight = MAX_RISE_HEIGHT;
+            else if(currentRiseHeight < 0.0f)
+                currentRiseHeight = 0.0f;
 
-        transform.position = new Vector2(pos.x, pos.y + currentRiseHeight);
+            transform.position = new Vector3(pos.x, pos.y + currentRiseHeight, owningCard.getCardZ());
+        }
 
     }
 
@@ -47,6 +50,10 @@ public class CardControl : MonoBehaviour {
             direction = 1.0f;
         else
             direction = -1.0f;
+    }
+
+    public void setCanRise(bool val) {
+        canRise = val;
     }
 
     private void OnMouseDown() {
