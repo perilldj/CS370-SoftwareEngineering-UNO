@@ -21,6 +21,8 @@ public class Pile {
     private Vector2 pilePos;
     private int currentClass = CardTypes.BLUE_CARD;
     private int currentType = CardTypes.ONE_CARD;
+    private BackgroundController backgroundController;
+    private GameControl gameController;
 
     /* 
        Constructor: Pile(Vector2 pos)
@@ -56,29 +58,20 @@ public class Pile {
             return true;
         }
 
-        /* If legal by a non special card class */
-        if(card.getCardClass() == currentClass) {
-            setTopCard(card);
-            return true;
-        }
-
         /* If legal by card type */
         if(card.getCardType() == currentType) {
 
             setTopCard(card);
-
             /* Checks for special card types and performs their functions */
-            switch(card.getCardType()) {
-                case CardTypes.REVERSE_CARD : //Do reverse
-                    break;
-                case CardTypes.SKIP_CARD : //Do skip
-                    break;
-                case CardTypes.PLUS_TWO_CARD : //Do +2
-                    break;
-            }
-
+            
             return true;
 
+        }
+
+        /* If legal by a non special card class */
+        if(card.getCardClass() == currentClass) {
+            setTopCard(card);
+            return true;
         }
 
         return false; // False returned for illegal move
@@ -100,6 +93,27 @@ public class Pile {
         topCardControl = card.getCardController();
         topCardControl.setCanPlay(false);
         topCardControl.stopHover();
+
+        if(backgroundController != null)
+            backgroundController.setBackgroundColor(card.getCardClass());
+
+        switch(card.getCardType()) {
+            case CardTypes.REVERSE_CARD : gameController.reversePlayed();
+                break;
+            case CardTypes.SKIP_CARD : //Do skip
+                break;
+            case CardTypes.PLUS_TWO_CARD : //Do +2
+                break;
+        }
+
+    }
+
+    public void setBackgroundController(BackgroundController backgroundController) {
+        this.backgroundController = backgroundController;
+    }
+
+    public void setGameController(GameControl gameController) {
+        this.gameController = gameController;
     }
 
 }

@@ -12,7 +12,11 @@ public class GameControl : MonoBehaviour {
     private SpinDirectionController directionController;
 
     [SerializeField]
-    private GameObject backgroundController; //Camera????
+    private Camera cam;
+
+    [SerializeField]
+    private GameObject backgroundObject;
+    private BackgroundController backgroundController;
 
     [SerializeField]
     private GameObject soundController; //TODO: Figure out sounds
@@ -48,8 +52,18 @@ public class GameControl : MonoBehaviour {
         directionController = directionIndicatorObject.GetComponent<SpinDirectionController>();
         directionController.spinClockwise();
 
-        pile = new Pile(pileLoc, deckScript.drawCard());
+        Card firstCard = deckScript.drawCard();
+        pile = new Pile(pileLoc, firstCard);
         playerHand.pile = pile;
+
+        backgroundObject = Instantiate(backgroundObject);
+        backgroundController = backgroundObject.GetComponent<BackgroundController>();
+        backgroundController.setCamera(cam);
+
+        backgroundController.setBackgroundColor(firstCard.getCardClass());
+
+        pile.setBackgroundController(backgroundController);
+        pile.setGameController(this);
 
     }
 
@@ -73,4 +87,13 @@ public class GameControl : MonoBehaviour {
         }
 
     }
+
+    public void reversePlayed() {
+        Debug.Log("YOOOOO");
+        if(directionController.getIsSpinningClockwise())
+            directionController.spinCounterClockwise();
+        else
+            directionController.spinClockwise();
+    }
+
 }
