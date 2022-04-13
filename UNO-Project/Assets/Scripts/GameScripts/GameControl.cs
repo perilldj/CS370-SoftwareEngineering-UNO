@@ -89,11 +89,14 @@ public class GameControl : MonoBehaviour {
     }
 
     public void reversePlayed() {
-        Debug.Log("YOOOOO");
         if(directionController.getIsSpinningClockwise())
             directionController.spinCounterClockwise();
         else
             directionController.spinClockwise();
+    }
+
+    public void skipPlayed() {
+        directionController.doSpeedup();
     }
 
 }

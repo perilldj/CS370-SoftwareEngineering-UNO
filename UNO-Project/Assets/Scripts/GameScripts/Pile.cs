@@ -45,27 +45,28 @@ public class Pile {
     public bool attemptMove(Card card) {
 
         /* If card is a wild card */
-        if(card.getCardType() == CardTypes.WILD_CARD) {
+        if(card.getCardClass() == CardTypes.WILD_CARD) {
             setTopCard(card);
             //Do wild
             return true;
         }
 
         /* If card is a +4 wild card */
-        if(card.getCardType() == CardTypes.PLUS_FOUR_CARD) {
+        if(card.getCardClass() == CardTypes.PLUS_FOUR_CARD) {
             setTopCard(card);
             //Do +4 wild
             return true;
         }
 
+        if(topCard.getCardClass() == CardTypes.WILD_CARD || topCard.getCardClass() == CardTypes.PLUS_FOUR_CARD) {
+            setTopCard(card);
+            return true;
+        }
+
         /* If legal by card type */
         if(card.getCardType() == currentType) {
-
             setTopCard(card);
-            /* Checks for special card types and performs their functions */
-            
             return true;
-
         }
 
         /* If legal by a non special card class */
@@ -84,6 +85,7 @@ public class Pile {
     */
 
     private void setTopCard(Card card) {
+
         currentClass = card.getCardClass();
         currentType = card.getCardType();
         if(topCard != null)
@@ -100,7 +102,7 @@ public class Pile {
         switch(card.getCardType()) {
             case CardTypes.REVERSE_CARD : gameController.reversePlayed();
                 break;
-            case CardTypes.SKIP_CARD : //Do skip
+            case CardTypes.SKIP_CARD : gameController.skipPlayed();
                 break;
             case CardTypes.PLUS_TWO_CARD : //Do +2
                 break;

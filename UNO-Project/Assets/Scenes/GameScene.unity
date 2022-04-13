@@ -154,7 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: 3141082209676584502, guid: b9786ce4a28726243a5d913d80284d58, type: 3}
   directionIndicatorObject: {fileID: 1080682237840129771, guid: dffa3c2c1ca3b8848865d67000dcb5f2, type: 3}
-  backgroundController: {fileID: 0}
+  cam: {fileID: 1506238023}
+  backgroundObject: {fileID: 1342363789190302614, guid: aa1388f8b4b057d4fb4fe6f7b394d0d8, type: 3}
   soundController: {fileID: 0}
   deck: {fileID: 151214507652611868, guid: 7867e678b40210241bcea0cb92617ac6, type: 3}
 --- !u!4 &1392481743
