@@ -56,29 +56,43 @@ public static class CardTypes {
 */
 
 public class Card {
-    
-    /* Parts for on-screen cards */
-    private SpriteRenderer class_sprite;
-    private SpriteRenderer type_sprite;
-    private GameObject class_object;
-    private GameObject type_object;
+
+    private GameObject card;
+
+    private GameObject cardClassObject;
+    private GameObject cardTypeObject;
+
+    private SpriteRenderer cardClassRenderer;
+    private SpriteRenderer cardTypeRenderer;
 
     //IDs for card class and type
     private int cardClass;
     private int cardType;
 
+    private int id;
+
     //Reference to the deck (To get card textures)
     public Deck deck;
 
+    public Hand currentHand = null;
+
     //On screen data
     private Vector2 position;
-    private int layer;
+    private int layer = 0;
     private float scale = 0.3f;
+
+    private CardControl cardControl = null;
 
     /*
         Method: createOnScreenCard()
         Description: Creates a visual card on-screen thats tied to this class.
     */
+
+    public Card(GameObject cardPrefab, Hand currentHand, int id) {
+        this.card = cardPrefab;
+        this.currentHand = currentHand;
+        this.id = id;
+    }
 
     public void createOnScreenCard() {
 
@@ -92,22 +106,37 @@ public class Card {
         else
             type_texture = deck.getTexture(cardType);
 
-        /* Creates a game object for the class and type */
-        class_object = new GameObject();
-        type_object = new GameObject();
+        card = GameObject.Instantiate(card);
 
-        /* Adds a SpriteRenderer component to each GameObject */
-        class_sprite = class_object.AddComponent<SpriteRenderer>() as SpriteRenderer;
-        type_sprite = type_object.AddComponent<SpriteRenderer>() as SpriteRenderer;
+        cardControl = card.GetComponent<CardControl>();
+        cardControl.setOwningCard(this);
+
+        cardClassObject = card.gameObject.transform.GetChild(0).gameObject;
+        cardTypeObject = cardClassObject.gameObject.transform.GetChild(0).gameObject;
+
+        cardClassRenderer = cardClassObject.GetComponent<SpriteRenderer>();
+        cardTypeRenderer = cardTypeObject.GetComponent<SpriteRenderer>();
 
         /* Creates sprites for the SpriteRenderers*/
-        class_sprite.sprite = Sprite.Create(class_texture, new Rect(0.0f, 0.0f, class_texture.width, class_texture.height), new Vector2(0.5f, 0.5f), 100.0f);
-        type_sprite.sprite = Sprite.Create(type_texture, new Rect(0.0f, 0.0f, type_texture.width, type_texture.height), new Vector2(0.5f, 0.5f), 100.0f);
+        cardClassRenderer.sprite = Sprite.Create(class_texture, new Rect(0.0f, 0.0f, class_texture.width, class_texture.height), new Vector2(0.5f, 0.5f), 100.0f);
+        cardTypeRenderer.sprite = Sprite.Create(type_texture, new Rect(0.0f, 0.0f, type_texture.width, type_texture.height), new Vector2(0.5f, 0.5f), 100.0f);
 
         /* Set scale and position */
         setCardScale(scale);
         setCardPos(Vector2.zero);
 
+    }
+
+    public void onCardClick() {
+        if(currentHand != null) {
+            currentHand.playCard(id);
+        }
+    }
+
+    public void destroy() {
+        GameObject.Destroy(card);
+        GameObject.Destroy(cardClassObject);
+        GameObject.Destroy(cardTypeObject);
     }
 
     /*
@@ -116,10 +145,15 @@ public class Card {
     */
     public void setCardPos(Vector2 pos) {
         position = pos;
-        if(class_object != null && type_object != null) {
-            class_object.transform.position = new Vector3(position.x, position.y, 0.01f * -layer);
-            type_object.transform.position = new Vector3(position.x, position.y, 0.01f * -layer - 0.001f);
-        }
+        card.transform.position = new Vector3(pos.x, pos.y, layer * -0.02f);
+    }
+
+    public CardControl getCardController() {
+        return cardControl;
+    }
+
+    public Vector2 getCardPos() {
+        return position;
     }
 
     /*
@@ -129,10 +163,11 @@ public class Card {
 
     public void setLayer(int val) {
         layer = val;
-        if(class_object != null && type_object != null) {
-            class_object.transform.position = new Vector3(position.x, position.y, 0.01f * -layer);
-            type_object.transform.position = new Vector3(position.x, position.y, 0.01f * -layer - 0.001f);
-        }
+        card.transform.position = new Vector3(position.x, position.y, layer * -0.02f);
+    }
+
+    public float getCardZ() {
+        return (float)layer * -0.02f;
     }
 
     /*
@@ -142,10 +177,7 @@ public class Card {
 
     public void setCardScale(float val) {
         scale = val;
-        if(class_object != null && type_object != null) {
-            class_object.transform.localScale = new Vector3(scale, scale, 1);
-            type_object.transform.localScale = new Vector3(scale, scale, 1);
-        }
+        card.transform.localScale = new Vector3(val, val, val);
     }
 
     /*
@@ -184,6 +216,19 @@ public class Card {
 
     public int getCardType() {
         return cardType;
+    }
+
+    /*
+        Method: getCardID()
+        Description: Returns the unique ID of the card.
+    */
+
+    public int getCardID() {
+        return id;
+    }
+
+    public GameObject getCardObject() {
+        return card;
     }
 
 }

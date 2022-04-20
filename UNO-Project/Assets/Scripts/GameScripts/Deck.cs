@@ -21,16 +21,17 @@ public class Deck : MonoBehaviour {
     [SerializeField] /* List to load in all sprites */
     private List<Texture2D> cardSprites;
 
-    private Queue<Card> deck = new Queue<Card>();   //Queue for deck to be stored
-    private Hand hand = new Hand();                 //Reference to player's hand (A better way for multiple hands needs to be made)
+    [SerializeField]
+    private GameObject cardPrefab;
 
-    /*
-        Method: Start()
-        Description: Initializes Deck by calling initializeDeckFunction
-    */
+    private Queue<Card> deck = new Queue<Card>();   //Queue for deck to be stored
+    public Hand hand;                              //Reference to player's hand (A better way for multiple hands needs to be made)
+    public Pile pile;
+
+    private int idCount = 0;
 
     void Start() {
-        initializeDeck();
+
     }
 
     /*
@@ -47,19 +48,21 @@ public class Deck : MonoBehaviour {
         Description: Creates and shuffles a deck into the deck Queue.
     */
 
-    private void initializeDeck() {
+    public void initializeDeck() {
 
         List<Card> orderedDeck = new List<Card>();
         List<Card> shufledDeck;
 
-        for(int i = 0; i < 6; i++) {        //This doesn't create the cards in correct proportions, way to many wild and +4s
-            for(int j = 6; j < 18; j++) {   //I need to rewrite this so it creates all the cards in the correct proportions -perilldj
-                Card newCard = new Card(); 
-                newCard.setCardClass(i);
-                newCard.setCardType(j);
-                newCard.deck = this;
-                orderedDeck.Add(newCard);
+        for(int i = 0; i < 4; i++) {
+
+            addCard(orderedDeck, CardTypes.WILD_CARD, 18);
+            addCard(orderedDeck, CardTypes.PLUS_FOUR_CARD, 18);
+
+            for(int j = 6; j < 18; j++) {
+                addCard(orderedDeck, i, j);
+                addCard(orderedDeck, i, j);
             }
+
         }
 
         /* Shufles the deck */
@@ -80,7 +83,24 @@ public class Deck : MonoBehaviour {
     */
 
     private void OnMouseDown() {
-        hand.addCard(deck.Dequeue());
+        hand.addCard(drawCard());
+    }
+
+    public Card drawCard() {
+        return deck.Dequeue();
+    }
+
+    private void addCard(List<Card> deck, int cardClass, int cardType) {
+        Card newCard = new Card(cardPrefab, hand, idCount);
+        idCount++;
+        newCard.setCardClass(cardClass);
+        newCard.setCardType(cardType);
+        newCard.deck = this;
+        deck.Add(newCard);
+    }
+
+    public void setDeckPos(Vector2 pos) {
+        transform.position = pos;
     }
 
 }
