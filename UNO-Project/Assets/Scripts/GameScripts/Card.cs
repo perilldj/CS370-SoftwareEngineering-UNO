@@ -58,7 +58,6 @@ public static class CardTypes {
                public GameObject getCardObject();
 
     Author: perilldj
-
 */
 
 public class Card {
