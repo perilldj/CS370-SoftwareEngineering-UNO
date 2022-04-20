@@ -4,7 +4,7 @@ using UnityEngine;
 
 /*
     Class: BackgroundController : MonoBehavior
-    Description: Used to controll the changing of the background color base on the previous card that was played.
+    Description: Used to control the changing of the background color base on the previous card that was played.
                  If the card color changes to yellow, the background changes to yellow, if it changes to blue, the
                  background changes to blue.
 

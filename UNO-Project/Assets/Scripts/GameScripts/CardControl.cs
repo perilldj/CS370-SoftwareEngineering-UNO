@@ -2,6 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+    Class: CardControl : MonoBehavior
+    Description: Used to control the behavior of the physical GameObject that represents a card on screen.
+
+    Methods:   Start();
+               Update();
+               public void setOwningCard(Card card);
+               public Card getOwningCard();
+               public void setIsHovering(bool val);
+               public void setCanRise(bool val);
+               public void setCanPlay(bool val);
+               private void OnMouseDown();
+               public void stopHover();
+
+
+    Author: perilldj
+*/
+
 public class CardControl : MonoBehaviour {
 
     private Card owningCard;
@@ -9,41 +27,58 @@ public class CardControl : MonoBehaviour {
 
     private const float RISE_SPEED = 3.0f;
     private const float MAX_RISE_HEIGHT = 0.35f;
+
     private float direction = -1.0f;
+
     private float currentRiseHeight = 0;
+    
     private bool canRise = true;
     private bool canPlay = true;
     private bool lockHover = false;
 
-    // Start is called before the first frame update
-    void Start() {
-        
-    }
+    void Start() {  }
 
-    // Update is called once per frame
     void Update() {
 
+        /* Controls the motion of the card when the mouse is hovering over it */
         if(canRise) {
             Vector2 pos = owningCard.getCardPos();
-            currentRiseHeight += (RISE_SPEED * Time.deltaTime * direction);
+            currentRiseHeight += (RISE_SPEED * Time.deltaTime * direction); //Increases the height of teh card by RISE_SPEED * Time.deltaTime * direction
 
+            /* Clamps currentRiseHeight so it remains in bounds */
             if(currentRiseHeight > MAX_RISE_HEIGHT)
                 currentRiseHeight = MAX_RISE_HEIGHT;
             else if(currentRiseHeight < 0.0f)
                 currentRiseHeight = 0.0f;
 
+            //Updates transform position. NOTE: Does not change the Card.cs position value, it doesn't need to.
             transform.position = new Vector3(pos.x, pos.y + currentRiseHeight, owningCard.getCardZ());
         }
 
     }
 
+    /*
+        Method: setOwningCard(Card card)
+        Description: Sets a reference to the owning Card object.
+    */
+
     public void setOwningCard(Card card) {
         owningCard = card;
     }
     
+    /*
+        Method: getOwningCard()
+        Description: Returns reference to the owning Card object.
+    */
+
     public Card getOwningCard() {
         return owningCard;
     }
+
+    /*
+        Method: setIsHovering(bool val)
+        Description: Sets the isHovering bool, also sets the direction of the hover, rise or fall.
+    */
 
     public void setIsHovering(bool val) {
         if(!lockHover) {
@@ -55,18 +90,38 @@ public class CardControl : MonoBehaviour {
         }
     }
 
+    /*
+        Method: setCanRise(bool val)
+        Description: Sets the ability to hover all together.
+    */
+
     public void setCanRise(bool val) {
         canRise = val;
     }
+
+    /*
+        Method: setCanPlay(bool val)
+        Description: Sets the ability for you to play this card to the pile.
+    */
 
     public void setCanPlay(bool val) {
         canPlay = val;
     }
 
+    /*
+        Method: OnMouseDown()
+        Description: Triggered when this card is clicked, makes an attempt to play the card.
+    */
+
     private void OnMouseDown() {
         if(canPlay)
             owningCard.onCardClick();
     }
+
+    /*
+        Method: stopHover()
+        Description: Stop the ability to hover, while still allowing it to fall back down to its resting position.
+    */
 
     public void stopHover() {
         direction = -1.0f;
