@@ -42,14 +42,20 @@ public static class CardTypes {
     Description: Object for a card game, has the capability to be on or off screen and still retain it's data
                  A card has a class and a type, information of what makes a class and a type can be found in the CardTypes class.
 
-    Methods:   createOnScreenCard();
-               setCardPos(Vector2 pos);
+    Methods:   public void createOnScreenCard();
+               public void onCardClick();
+               public void destroy();
+               public CardControl getCardController();
+               public void setCardPos(Vector2 pos);
                public void setLayer(int val);
+               public float getCardZ()
                public void setCardScale(float val);
                public void setCardClass(int cClass);
                public void setCardType(int cType);
                public int getCardClass();
                public int getCardType();
+               public int getCardID();
+               public GameObject getCardObject();
 
     Author: perilldj
 
@@ -57,31 +63,31 @@ public static class CardTypes {
 
 public class Card {
 
+    //Components for on screen card
     private GameObject card;
-
     private GameObject cardClassObject;
     private GameObject cardTypeObject;
-
     private SpriteRenderer cardClassRenderer;
     private SpriteRenderer cardTypeRenderer;
+    private CardControl cardControl = null;
 
     //IDs for card class and type
     private int cardClass;
     private int cardType;
 
+    //Unique identifier for the card
     private int id;
 
     //Reference to the deck (To get card textures)
     public Deck deck;
 
+    //Cards owning hand
     public Hand currentHand = null;
 
     //On screen data
     private Vector2 position;
     private int layer = 0;
     private float scale = 0.3f;
-
-    private CardControl cardControl = null;
 
     /*
         Method: createOnScreenCard()
@@ -106,14 +112,18 @@ public class Card {
         else
             type_texture = deck.getTexture(cardType);
 
+        /* Creates on screen game object */
         card = GameObject.Instantiate(card);
 
+        /* Gets the card's card control script */
         cardControl = card.GetComponent<CardControl>();
         cardControl.setOwningCard(this);
 
+        /* Gets cards on screen sprite objects */
         cardClassObject = card.gameObject.transform.GetChild(0).gameObject;
         cardTypeObject = cardClassObject.gameObject.transform.GetChild(0).gameObject;
 
+        /* Gets card's class and type SpriteRenderers */
         cardClassRenderer = cardClassObject.GetComponent<SpriteRenderer>();
         cardTypeRenderer = cardTypeObject.GetComponent<SpriteRenderer>();
 
@@ -127,11 +137,22 @@ public class Card {
 
     }
 
+    /*
+        Method: onCardClick()
+        Description: Gets called from the CardControl script when the in game card is clicked.
+                     Tells the owning hand (if it exists) that one of it's cards is attempting to be played.
+    */
+
     public void onCardClick() {
         if(currentHand != null) {
             currentHand.playCard(id);
         }
     }
+
+    /*
+        Method: destroy()
+        Description: destroys the on screen card in its entirety.
+    */
 
     public void destroy() {
         GameObject.Destroy(card);
@@ -141,16 +162,26 @@ public class Card {
 
     /*
         Method: setCardPos(Vector2 pos)
-        Description: Sets the position of the on-screen card
+        Description: Sets the position of the on-screen card.
     */
     public void setCardPos(Vector2 pos) {
         position = pos;
         card.transform.position = new Vector3(pos.x, pos.y, layer * -0.02f);
     }
 
+    /*
+        Method getCardController()
+        Decsription: Returns the CardControl script attached to the in-game card.
+    */
+
     public CardControl getCardController() {
         return cardControl;
     }
+
+    /*
+        Method getCardPos()
+        Decsription: Returns a Vector2 which contains the position of the card.
+    */
 
     public Vector2 getCardPos() {
         return position;
@@ -165,6 +196,11 @@ public class Card {
         layer = val;
         card.transform.position = new Vector3(position.x, position.y, layer * -0.02f);
     }
+
+    /*
+        Method: getCardZ()
+        Description: Returns the Z position equivalent of the card's layer.
+    */
 
     public float getCardZ() {
         return (float)layer * -0.02f;
@@ -226,6 +262,11 @@ public class Card {
     public int getCardID() {
         return id;
     }
+
+    /*
+        Method: getCardObject()
+        Description: Returns a reference to the card's physical GameObject that it owns.
+    */
 
     public GameObject getCardObject() {
         return card;
