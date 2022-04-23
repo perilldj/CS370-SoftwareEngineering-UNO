@@ -8,11 +8,11 @@ using UnityEngine;
                  Also contains a list of cards that go on screen. Designed for multiple to exist in game
 
     Methods: addCard(Card card);
+             removeCard(int index);
+             playCard(int cardID);
 
     Needed additions: Constructor to set the two Vector2s.
-                      Ability to remove a specific card from hand.
                       Differentiate between player and opponent hands to draw cards face up or face down on screen.
-                      Calculate the angle so when the defined line for the hand orients the cards correctly.
 
     Author: perilldj
 */
@@ -43,6 +43,11 @@ public class Hand {
         ajustCardPositions();       //Update positions of the cards
     }
 
+    /* 
+        Method: removeCard(int index)
+        Description: Removes a card from the hand at a given index.
+    */
+
     public void removeCard(int index) {
         cards.RemoveAt(index);
     }
@@ -68,8 +73,15 @@ public class Hand {
         }
     }
 
+    /*
+        Method: playCard(int cardId)
+        Description: Attempts to play a card to the pile. If a player attempts to make an illegal move, the card will not
+                    be played to the pile.
+    */
+
     public void playCard(int cardID) {
 
+        /* Finds the card in the hand with the given cardID */
         Card card = null;
         int index = 0;
         for(int i = 0; i < handSize; i++) {
@@ -79,6 +91,7 @@ public class Hand {
                 break;
         }
 
+        /* If the move attempt is successful remove it from the hand and make necessary ajustments */
         if(pile.attemptMove(card)) {
             removeCard(index);
             handSize--;
