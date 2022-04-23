@@ -10,6 +10,8 @@ using UnityEngine;
     Methods:
         public Pile(Vector2 pos)
         public bool attemptMove(Card card)
+        public void setBackgroundController(BackgroundController backgroundController)
+        public void setGameController(GameControl gameController)
 
     Author: perilldj
 */
