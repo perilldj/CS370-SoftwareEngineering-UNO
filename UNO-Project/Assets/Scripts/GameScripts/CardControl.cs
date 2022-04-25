@@ -36,7 +36,8 @@ public class CardControl : MonoBehaviour {
     private bool canPlay = true;
     private bool lockHover = false;
 
-    void Start() {  }
+    void Start() { 
+     }
 
     void Update() {
 
@@ -55,6 +56,29 @@ public class CardControl : MonoBehaviour {
             transform.position = new Vector3(pos.x, pos.y + currentRiseHeight, owningCard.getCardZ());
         }
 
+    }
+
+    public IEnumerator lerpPos(Vector2 targetPos, float duration) {
+        float time = 0;
+        owningCard.setCardPos(transform.position);
+        Vector2 startPos = transform.position;
+        while(time < duration) {
+            owningCard.setCardPos(Vector2.Lerp(startPos, targetPos, time / duration));
+            time += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = targetPos;
+    }
+
+    public IEnumerator lerpScale(float startScale, float goalScale, float duration) {
+        float time = 0;
+        owningCard.setCardScale(startScale);
+        while(time < duration) {
+            owningCard.setCardScale(Mathf.Lerp(startScale, goalScale, time / duration));
+            time += Time.deltaTime;
+            yield return null;
+        }
+        owningCard.setCardScale(goalScale);
     }
 
     /*
