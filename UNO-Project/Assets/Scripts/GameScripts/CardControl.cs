@@ -8,8 +8,8 @@ using UnityEngine;
 
     Methods:   Start();
                Update();
-               public IEnumerator lerpPos(Vector2 targetPos, float duration);
-               public IEnumerator lerpScale(float startScale, float goalScale, float duration);
+               public doLerpPos(Vector2 targetPos, float duration);
+               public doLerpScale(float startScale, float goalScale, float duration);
                public void setOwningCard(Card card);
                public Card getOwningCard();
                public void setIsHovering(bool val);
@@ -34,12 +34,11 @@ public class CardControl : MonoBehaviour {
 
     private float currentRiseHeight = 0;
     
-    private bool canRise = true;
+    private bool canRise = false;
     private bool canPlay = true;
     private bool lockHover = false;
 
-    void Start() { 
-     }
+    void Start() { }
 
     void Update() {
 
@@ -60,21 +59,28 @@ public class CardControl : MonoBehaviour {
 
     }
 
+    public void doLerpPos(Vector2 targetPos, float duration) {
+        StartCoroutine(lerpPos(targetPos, duration));
+    }
+
     /*
         Method: IEnumerator lerpPos(Vector2 targetPos, float duration)
         Description: When called the card will slide to the target position for the given duration in seconds
     */
 
-    public IEnumerator lerpPos(Vector2 targetPos, float duration) {
+    private IEnumerator lerpPos(Vector2 targetPos, float duration) {
         float time = 0;
         owningCard.setCardPos(transform.position);
         Vector2 startPos = transform.position;
+        setCanRise(false);
         while(time < duration) { //A loop will occur independantly every frame after the method is called
             owningCard.setCardPos(Vector2.Lerp(startPos, targetPos, time / duration)); //Applies lerp
             time += Time.deltaTime; //Increments elapsed time by deltaTime
             yield return null;
         }
         transform.position = targetPos;
+        setCanRise(true);
+        setIsHovering(false);
     }
 
     /*
@@ -82,7 +88,7 @@ public class CardControl : MonoBehaviour {
         Description: When called the card will scale to the target size for the given duration in seconds.
     */
 
-    public IEnumerator lerpScale(float startScale, float goalScale, float duration) {
+    private IEnumerator lerpScale(float startScale, float goalScale, float duration) {
         float time = 0;
         owningCard.setCardScale(startScale);
         while(time < duration) { //A loop will occur independantly every frame after the method is called

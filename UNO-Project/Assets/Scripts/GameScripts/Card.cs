@@ -132,7 +132,7 @@ public class Card {
 
         /* Set scale and position */
         setCardScale(scale);
-        setCardPos(Vector2.zero);
+        setCardPos(deck.transform.position);
 
     }
 
