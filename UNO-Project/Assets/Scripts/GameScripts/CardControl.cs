@@ -8,6 +8,8 @@ using UnityEngine;
 
     Methods:   Start();
                Update();
+               public IEnumerator lerpPos(Vector2 targetPos, float duration);
+               public IEnumerator lerpScale(float startScale, float goalScale, float duration);
                public void setOwningCard(Card card);
                public Card getOwningCard();
                public void setIsHovering(bool val);
@@ -58,24 +60,34 @@ public class CardControl : MonoBehaviour {
 
     }
 
+    /*
+        Method: IEnumerator lerpPos(Vector2 targetPos, float duration)
+        Description: When called the card will slide to the target position for the given duration in seconds
+    */
+
     public IEnumerator lerpPos(Vector2 targetPos, float duration) {
         float time = 0;
         owningCard.setCardPos(transform.position);
         Vector2 startPos = transform.position;
-        while(time < duration) {
-            owningCard.setCardPos(Vector2.Lerp(startPos, targetPos, time / duration));
-            time += Time.deltaTime;
+        while(time < duration) { //A loop will occur independantly every frame after the method is called
+            owningCard.setCardPos(Vector2.Lerp(startPos, targetPos, time / duration)); //Applies lerp
+            time += Time.deltaTime; //Increments elapsed time by deltaTime
             yield return null;
         }
         transform.position = targetPos;
     }
 
+    /*
+        Method: IEnumerator lerpScale(float startScale, float goalScale, float duration)
+        Description: When called the card will scale to the target size for the given duration in seconds.
+    */
+
     public IEnumerator lerpScale(float startScale, float goalScale, float duration) {
         float time = 0;
         owningCard.setCardScale(startScale);
-        while(time < duration) {
-            owningCard.setCardScale(Mathf.Lerp(startScale, goalScale, time / duration));
-            time += Time.deltaTime;
+        while(time < duration) { //A loop will occur independantly every frame after the method is called
+            owningCard.setCardScale(Mathf.Lerp(startScale, goalScale, time / duration)); //Applies lerp
+            time += Time.deltaTime; //Increments elapsed time by deltaTime
             yield return null;
         }
         owningCard.setCardScale(goalScale);
