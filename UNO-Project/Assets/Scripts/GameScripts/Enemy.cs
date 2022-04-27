@@ -67,7 +67,7 @@ public class Enemy {
     private const float HAND_WIDTH = 3.0f;
     private const float CARD_SIZE = 0.1f;
 
-    public Enemy(Vector2 pos, GameObject enemyPrefab) {
+    public Enemy(Vector2 pos, GameObject enemyPrefab, Pile pile) {
 
         enemyObject = GameObject.Instantiate(enemyPrefab);
         enemyObject.transform.position = new Vector3(pos.x, pos.y, 0.0f);
@@ -91,6 +91,7 @@ public class Enemy {
         hand.setHandWidth(HAND_WIDTH);
         hand.setCardSize(CARD_SIZE);
         hand.setIsEnemy(true);
+        hand.pile = pile;
 
         updateCardCount();  
 
@@ -104,6 +105,7 @@ public class Enemy {
             card = hand.get(i);
             if(hand.playCard(card.getCardID())) {
                 updateCardCount();
+                card.flipCard();
                 return true;
             }
         }

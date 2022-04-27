@@ -62,6 +62,28 @@ public class Pile {
 
     }
 
+    public bool canMove(Hand hand) {
+
+        Card card;
+
+        for(int i = 0; i < hand.getHandSize(); i++) {
+            card = hand.get(i);
+            if(card.getCardClass() == CardTypes.WILD_CARD)
+                return true;
+             if(card.getCardClass() == CardTypes.PLUS_FOUR_CARD)
+                return true;
+            if(topCard.getCardClass() == CardTypes.WILD_CARD || topCard.getCardClass() == CardTypes.PLUS_FOUR_CARD)
+                return true;
+            if(card.getCardType() == currentType)
+                return true;
+            if(card.getCardClass() == currentClass)
+                return true;
+        }
+
+        return false;
+
+    }
+
     /*
         Method: public bool attemptMove(Card card)
         Description: Called to attempt a move, it will return false
@@ -124,8 +146,8 @@ public class Pile {
         }
 
         topCard = card;
-        topCard.getCardController().doLerpPos(pilePos, 0.1f);
-        topCard.getCardController().doLerpScale(topCard.getCardScale(), cardSize, 0.1f);
+        topCard.getCardController().doLerpPos(pilePos, 0.3f);
+        topCard.getCardController().doLerpScale(topCard.getCardScale(), cardSize, 0.3f);
         topCard.setCardScale(cardSize);
         topCardControl = card.getCardController();
         topCardControl.setCanPlay(false);
@@ -142,6 +164,8 @@ public class Pile {
             case CardTypes.PLUS_TWO_CARD : //Do +2
                 break;
         }
+
+        gameController.completedMove();
 
     }
 

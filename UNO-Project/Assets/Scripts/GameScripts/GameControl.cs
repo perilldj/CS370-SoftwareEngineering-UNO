@@ -61,6 +61,8 @@ public class GameControl : MonoBehaviour {
     private int turnDirection = 1;
     private int turnIndex = 0;
     private int playerIndex;
+    private bool gameEnabled = true;
+    private bool turnComplete = false;
 
     // Start is called before the first frame update
     void Start() {
@@ -104,7 +106,7 @@ public class GameControl : MonoBehaviour {
         hidePlayerTurnIndicator();
 
         for(int i = 0; i < enemyPositions.Count; i++) {
-            enemies.Add(new Enemy(enemyPositions[i], enemyPrefab));
+            enemies.Add(new Enemy(enemyPositions[i], enemyPrefab, pile));
         }
 
         StartCoroutine(initializeGame());
@@ -139,9 +141,68 @@ public class GameControl : MonoBehaviour {
         }
 
         System.Random ran = new System.Random();
-        playerIndex = enemies.Count + 1;
-        turnIndex = ran.Next(0, playerIndex);
+        playerIndex = enemies.Count;
+        turnIndex = ran.Next(0, playerIndex + 1);
 
+        StartCoroutine(gameLoop());
+
+    }
+
+    private IEnumerator gameLoop() {
+
+        while(gameEnabled) {
+
+            turnComplete = false;
+
+            yield return new WaitForSeconds(1.0f);
+
+            if(turnIndex == playerIndex) {
+                showPlayerTurnIndicator();
+                playerHand.setCanMove(true);
+
+                while(!pile.canMove(playerHand)) {
+                    playerHand.addCard(deckScript.drawCard());
+                    yield return new WaitForSeconds(0.8f);
+                }
+
+                yield return new WaitUntil(() => turnComplete == true);
+                playerHand.setCanMove(false);
+                hidePlayerTurnIndicator();
+
+            } else {
+
+                Enemy enemy = enemies[turnIndex];
+
+                enemy.setRedBackground();
+                enemy.getHand().setCanMove(true);
+
+                yield return new WaitForSeconds(1.0f);
+
+                while(!pile.canMove(enemy.getHand())) {
+                    enemy.addCard(deckScript.drawCard());
+                    yield return new WaitForSeconds(0.8f);
+                }
+
+                enemy.attemptRandomMove();
+                enemy.getHand().setCanMove(false);
+                enemy.setWhiteBackground();
+
+            }
+
+            turnIndex += turnDirection;
+            if(turnIndex > playerIndex)
+                turnIndex = 0;
+            if(turnIndex < 0)
+                turnIndex = playerIndex;
+
+            Debug.Log(turnIndex);
+
+        }
+
+    }
+
+    public void completedMove() {
+        turnComplete = true;
     }
 
     // Update is called once per frame
@@ -175,10 +236,10 @@ public class GameControl : MonoBehaviour {
     public void reversePlayed() {
         if(directionController.getIsSpinningClockwise()) {
             directionController.spinCounterClockwise();
-            turnDirection = 1;
+            turnDirection = -1;
         } else {
             directionController.spinClockwise();
-            turnDirection = -1;
+            turnDirection = 1;
         }
     }
 
