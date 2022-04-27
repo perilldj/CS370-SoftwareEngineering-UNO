@@ -12,6 +12,7 @@ public static class CardTypes {
 
     /* Transparent Texture */
     public const int NONE = 18;
+    public const int BACK_CARD = 19;
 
     /* Card Classes */
     public const int BLUE_CARD   = 0,
@@ -99,17 +100,26 @@ public class Card {
         this.id = id;
     }
 
-    public void createOnScreenCard() {
+    public void createOnScreenCard(bool isEnemy) {
 
-        Texture2D class_texture = deck.getTexture(cardClass);   //Get class texture
+        Texture2D class_texture, type_texture;
 
-        Texture2D type_texture;
-        /* If a card class is a wild card or a +4 card, there is no type necessary, this
-           checks for that and gets the appropriate texture */
-        if(cardClass == CardTypes.WILD_CARD || cardClass == CardTypes.PLUS_FOUR_CARD)
+        if(!isEnemy) {
+
+            class_texture = deck.getTexture(cardClass);   //Get class texture
+            /* If a card class is a wild card or a +4 card, there is no type necessary, this
+            checks for that and gets the appropriate texture */
+            if(cardClass == CardTypes.WILD_CARD || cardClass == CardTypes.PLUS_FOUR_CARD)
+                type_texture = deck.getTexture(CardTypes.NONE);
+            else
+                type_texture = deck.getTexture(cardType);
+
+        } else {
+
+            class_texture = deck.getTexture(CardTypes.BACK_CARD);
             type_texture = deck.getTexture(CardTypes.NONE);
-        else
-            type_texture = deck.getTexture(cardType);
+
+        }
 
         /* Creates on screen game object */
         card = GameObject.Instantiate(card);
@@ -117,6 +127,11 @@ public class Card {
         /* Gets the card's card control script */
         cardControl = card.GetComponent<CardControl>();
         cardControl.setOwningCard(this);
+        
+        if(isEnemy) {
+            cardControl.setCanPlay(true);
+            cardControl.stopHover();
+        }
 
         /* Gets cards on screen sprite objects */
         cardClassObject = card.gameObject.transform.GetChild(0).gameObject;

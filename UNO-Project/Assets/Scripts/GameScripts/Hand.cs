@@ -27,8 +27,10 @@ public class Hand {
     private float cardSize = 0.2f;
 
     private float handWidth = 7.5f;
-    private float offsetX = 0.0f;
+    private float handOffsetX = 0.0f;
     private float handYPos = -3.5f;
+
+    private bool isEnemy = false;
 
     /*
         Method: addCard(Card card)
@@ -37,12 +39,12 @@ public class Hand {
     */
 
     public void addCard(Card card) {
-        handSize++;                 //Increment handSize
+        handSize++;                        //Increment handSize
         if(!isPlayerHand)
             card.getCardController().setCanPlay(false);
-        cards.Add(card);            //Add card to hand
-        card.createOnScreenCard();  //Add card to screen
-        ajustCardPositions();       //Update positions of the cards
+        cards.Add(card);                   //Add card to hand
+        card.createOnScreenCard(isEnemy);  //Add card to screen
+        ajustCardPositions();              //Update positions of the cards
     }
 
     /* 
@@ -66,7 +68,7 @@ public class Hand {
         int count = 1;
         foreach(Card card in cards) {                           //Loops through every card in hand
             currentX += spacing;                                //Increments x position by calculated spacing
-            card.getCardController().doLerpPos(new Vector2(currentX + offsetX, handYPos), 0.2f);
+            card.getCardController().doLerpPos(new Vector2(currentX + handOffsetX, handYPos), 0.2f);
             card.getCardController().doLerpScale(card.getCardScale(), cardSize, 0.2f);
             card.setLayer(count);                               //Increments render layer (z coordinate)
             count++;                                            //Increments count
@@ -106,6 +108,22 @@ public class Hand {
 
     public void setCardSize(float val) {
         cardSize = val;
+    }
+
+    public void setHandOffsetX(float val) {
+        handOffsetX = val;
+    }
+
+    public void setHandWidth(float val) {
+        handWidth = val;
+    }
+
+    public void setHandYPos(float val) {
+        handYPos = val;
+    }
+
+    public void setIsEnemy(bool val) {
+        isEnemy = val;
     }
 
 }

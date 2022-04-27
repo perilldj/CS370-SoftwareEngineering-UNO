@@ -71,7 +71,7 @@ public class GameControl : MonoBehaviour {
 
         /* Sets up the pile and adds the top card of the deck to it */
         Card firstCard = deckScript.drawCard();
-        pile = new Pile(pileLoc, firstCard);
+        pile = new Pile(pileLoc, firstCard, this);
         playerHand.pile = pile;
 
         /* Sets up the background color controller */
@@ -82,8 +82,18 @@ public class GameControl : MonoBehaviour {
         backgroundController.setBackgroundColor(firstCard.getCardClass());
 
         pile.setBackgroundController(backgroundController);
-        pile.setGameController(this);
 
+        RandomNames.clearUsedNames();
+
+        Enemy enemy = new Enemy(new Vector2(-7.0f,0), enemyPrefab);
+        enemy.getHand().addCard(deckScript.drawCard());
+        enemy.getHand().addCard(deckScript.drawCard());
+        enemy.getHand().addCard(deckScript.drawCard());
+        enemy.getHand().addCard(deckScript.drawCard());
+        enemy.getHand().addCard(deckScript.drawCard());
+        enemy.getHand().addCard(deckScript.drawCard());
+        enemy.getHand().addCard(deckScript.drawCard());
+        enemy.getHand().addCard(deckScript.drawCard());
     }
 
     // Update is called once per frame
@@ -103,10 +113,9 @@ public class GameControl : MonoBehaviour {
                 currentCard = cardControl;
                 cardControl.setIsHovering(true);
             }
-        } else {
+        } else
             if(currentCard != null)
                     currentCard.setIsHovering(false);
-        }
 
     }
 

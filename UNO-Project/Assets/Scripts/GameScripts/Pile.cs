@@ -32,9 +32,10 @@ public class Pile {
        Description: Initializes visual component and sets position of pile
     */ 
 
-    public Pile(Vector2 pos, Card card) {
+    public Pile(Vector2 pos, Card card, GameControl gameController) {
         this.pilePos = pos;
-        card.createOnScreenCard();
+        this.gameController = gameController;
+        card.createOnScreenCard(false);
         setTopCard(card);
     }
 
