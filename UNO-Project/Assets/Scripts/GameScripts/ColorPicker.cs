@@ -6,6 +6,7 @@ public class ColorPicker : MonoBehaviour
 {
 
     public GameObject colorPicker; 
+    public GameObject gameController;
     // Start is called before the first frame update
     void Start()
     {
