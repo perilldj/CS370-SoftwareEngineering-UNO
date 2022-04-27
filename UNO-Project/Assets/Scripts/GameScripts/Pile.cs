@@ -25,6 +25,7 @@ public class Pile {
     private int currentType = CardTypes.ONE_CARD;
     private BackgroundController backgroundController;
     private GameControl gameController;
+    private float cardSize = 0.3f;
 
     /* 
        Constructor: Pile(Vector2 pos)
@@ -94,6 +95,7 @@ public class Pile {
             topCard.destroy();
         topCard = card;
         topCard.setCardPos(pilePos);
+        topCard.setCardScale(cardSize);
         topCardControl = card.getCardController();
         topCardControl.setCanPlay(false);
         topCardControl.stopHover();

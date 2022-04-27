@@ -63,6 +63,10 @@ public class CardControl : MonoBehaviour {
         StartCoroutine(lerpPos(targetPos, duration));
     }
 
+    public void doLerpScale(float startScale, float goalScale, float duration) {
+        StartCoroutine(lerpScale(startScale, goalScale, duration));
+    }
+
     /*
         Method: IEnumerator lerpPos(Vector2 targetPos, float duration)
         Description: When called the card will slide to the target position for the given duration in seconds
@@ -78,9 +82,10 @@ public class CardControl : MonoBehaviour {
             time += Time.deltaTime; //Increments elapsed time by deltaTime
             yield return null;
         }
-        transform.position = targetPos;
         setCanRise(true);
         setIsHovering(false);
+        owningCard.setCardPos(targetPos);
+        
     }
 
     /*

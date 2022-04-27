@@ -215,6 +215,10 @@ public class Card {
         card.transform.localScale = new Vector3(val, val, val);
     }
 
+    public float getCardScale() {
+        return scale;
+    }
+
     /*
         Method: setCardClass(int cClass)
         Description: Sets the class of the card

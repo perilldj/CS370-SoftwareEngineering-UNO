@@ -11,9 +11,6 @@ using UnityEngine;
              removeCard(int index);
              playCard(int cardID);
 
-    Needed additions: Constructor to set the two Vector2s.
-                      Differentiate between player and opponent hands to draw cards face up or face down on screen.
-
     Author: perilldj
 */
 
@@ -22,13 +19,16 @@ public class Hand {
     /* List of cards in hand */
     private List<Card> cards = new List<Card>();
 
-    /* Both vectors create a line for the cards to be between */
-    private Vector2 p1 = new Vector2(-7.5f, -3.5f);
-    private Vector2 p2 = new Vector2(7.5f, -3.5f);
+    private bool isPlayerHand = true;
 
     public Pile pile;
 
-    int handSize = 0;
+    private int handSize = 0;
+    private float cardSize = 0.2f;
+
+    private float handWidth = 7.5f;
+    private float offsetX = 0.0f;
+    private float handYPos = -3.5f;
 
     /*
         Method: addCard(Card card)
@@ -38,6 +38,8 @@ public class Hand {
 
     public void addCard(Card card) {
         handSize++;                 //Increment handSize
+        if(!isPlayerHand)
+            card.getCardController().setCanPlay(false);
         cards.Add(card);            //Add card to hand
         card.createOnScreenCard();  //Add card to screen
         ajustCardPositions();       //Update positions of the cards
@@ -56,18 +58,16 @@ public class Hand {
         Method: ajustCardPositions()
         Description: This function is called internally when addCard(Card card) is called. It updates the positions
                      of every card in your hand so they are evenly placed between two points.
-
-        Known issues: The algorithm isn't entirely complete it, it just uses two arbitrary horizontal points
-                      instead of the two Vector2s created for the hand.
     */
 
     private void ajustCardPositions() {
-        float spacing = (1.0f / (float)(handSize + 1)) * 15.0f;  //Calculates horizontal spacing
-        float currentX = -7.5f;
-        int count = 0;
+        float spacing = (1.0f / (float)(handSize + 1)) * handWidth;  //Calculates horizontal spacing
+        float currentX = -(handWidth / 2);
+        int count = 1;
         foreach(Card card in cards) {                           //Loops through every card in hand
             currentX += spacing;                                //Increments x position by calculated spacing
-            card.getCardController().doLerpPos(new Vector2(currentX, -3.5f), 0.2f);
+            card.getCardController().doLerpPos(new Vector2(currentX + offsetX, handYPos), 0.2f);
+            card.getCardController().doLerpScale(card.getCardScale(), cardSize, 0.2f);
             card.setLayer(count);                               //Increments render layer (z coordinate)
             count++;                                            //Increments count
         }
@@ -98,6 +98,14 @@ public class Hand {
             ajustCardPositions();
         }
 
+    }
+
+    public void setIsPlayerHand(bool val) {
+        isPlayerHand = val;
+    }
+
+    public void setCardSize(float val) {
+        cardSize = val;
     }
 
 }
