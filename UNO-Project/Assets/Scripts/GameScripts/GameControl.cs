@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 /* 
     Class: GameControl : MonoBehavior
@@ -32,6 +34,11 @@ public class GameControl : MonoBehaviour {
     private GameObject enemyPrefab;
 
     [SerializeField]
+    private GameObject turnIndicator;
+    private TMP_Text turnIndicatorText;
+    private Image turnIndicatorImage;
+
+    [SerializeField]
     private List<Vector2> enemyPositions;
     private List<Enemy> enemies = new List<Enemy>();
 
@@ -49,6 +56,11 @@ public class GameControl : MonoBehaviour {
     private Hand[] enemyHands;
 
     private CardControl currentCard = null;
+
+    private const int INITIAL_CARD_COUNT = 7;
+    private int turnDirection = 1;
+    private int turnIndex = 0;
+    private int playerIndex;
 
     // Start is called before the first frame update
     void Start() {
@@ -86,10 +98,50 @@ public class GameControl : MonoBehaviour {
 
         RandomNames.clearUsedNames();
 
+        turnIndicator = Instantiate(turnIndicator);
+        turnIndicatorImage = turnIndicator.gameObject.transform.GetChild(0).GetChild(0).GetComponent<Image>();
+        turnIndicatorText = turnIndicator.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        hidePlayerTurnIndicator();
+
         for(int i = 0; i < enemyPositions.Count; i++) {
             enemies.Add(new Enemy(enemyPositions[i], enemyPrefab));
         }
+
+        StartCoroutine(initializeGame());
         
+    }
+
+    private void hidePlayerTurnIndicator() {
+        turnIndicatorImage.enabled = false;
+        turnIndicatorText.enabled = false;
+    }
+
+    private void showPlayerTurnIndicator() {
+        turnIndicatorImage.enabled = true;
+        turnIndicatorText.enabled = true;
+    }
+
+    private IEnumerator initializeGame() {
+
+        yield return new WaitForSeconds(2.0f);
+
+        for(int i = 0; i < enemies.Count; i++) {
+            for(int j = 0; j < INITIAL_CARD_COUNT; j++) {
+                enemies[i].addCard(deckScript.drawCard());
+                yield return new WaitForSeconds(0.1f);
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        for(int j = 0; j < INITIAL_CARD_COUNT; j++) {
+            playerHand.addCard(deckScript.drawCard()); //might need a player class later
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        System.Random ran = new System.Random();
+        playerIndex = enemies.Count + 1;
+        turnIndex = ran.Next(0, playerIndex);
+
     }
 
     // Update is called once per frame
@@ -121,10 +173,13 @@ public class GameControl : MonoBehaviour {
     */
 
     public void reversePlayed() {
-        if(directionController.getIsSpinningClockwise())
+        if(directionController.getIsSpinningClockwise()) {
             directionController.spinCounterClockwise();
-        else
+            turnDirection = 1;
+        } else {
             directionController.spinClockwise();
+            turnDirection = -1;
+        }
     }
 
     /*

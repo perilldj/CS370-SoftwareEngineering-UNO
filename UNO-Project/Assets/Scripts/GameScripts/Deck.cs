@@ -83,10 +83,12 @@ public class Deck : MonoBehaviour {
         Method: OnMouseDown()
         Description: Called when the sprite this script is added to is clicked. It adds a card
                      to the players hand while simultaneously removing it from the deck queue.
+
+        NOTE: Only used for debugging purposes
     */
 
     private void OnMouseDown() {
-        hand.addCard(drawCard());
+        //hand.addCard(drawCard());
     }
 
     /*

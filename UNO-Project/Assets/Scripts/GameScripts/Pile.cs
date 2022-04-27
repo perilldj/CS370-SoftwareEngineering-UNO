@@ -38,7 +38,28 @@ public class Pile {
         this.pilePos = pos;
         this.gameController = gameController;
         card.createOnScreenCard(false);
-        setTopCard(card);
+       
+        currentClass = card.getCardClass();
+        currentType = card.getCardType();
+
+        if(topCard != null) {
+            if(previousCard != null)
+                previousCard.destroy();
+            previousCard = topCard;
+            previousCard.setLayer(-5);
+        }
+
+        topCard = card;
+        topCard.getCardController().doLerpPos(pilePos, 0.1f);
+        topCard.getCardController().doLerpScale(topCard.getCardScale(), cardSize, 0.1f);
+        topCard.setCardScale(cardSize);
+        topCardControl = card.getCardController();
+        topCardControl.setCanPlay(false);
+        topCardControl.stopHover();
+
+        if(backgroundController != null)
+            backgroundController.setBackgroundColor(card.getCardClass());
+
     }
 
     /*

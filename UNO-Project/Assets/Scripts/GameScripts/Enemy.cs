@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;  
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public static class RandomNames {
     private static List<string> names = new List<string> {"Sophia", "Aiden", "Emma", "Jackson", "Isabella",
@@ -54,6 +55,10 @@ public class Enemy {
     private TMP_Text nameText;
     private TMP_Text cardCount;
 
+    private Image nameBackground;
+    private Image cardCountBackground;
+    private Image cardHolderBackground;
+
     private GameObject enemyObject;
     private Hand hand;
 
@@ -69,6 +74,10 @@ public class Enemy {
 
         nameText = enemyObject.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TMP_Text>();
         cardCount = enemyObject.gameObject.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
+
+        nameBackground = enemyObject.gameObject.transform.GetChild(0).GetChild(0).GetComponent<Image>();
+        cardCountBackground = enemyObject.gameObject.transform.GetChild(0).GetChild(1).GetComponent<Image>();
+        cardHolderBackground = enemyObject.gameObject.transform.GetChild(0).GetChild(2).GetComponent<Image>();
 
         if(isAI) {
             name = RandomNames.getRandomName();
@@ -101,6 +110,20 @@ public class Enemy {
 
         return true;
 
+    }
+
+    public void setRedBackground() {
+        Color redColor = new Color(1, 0, 0, 1);
+        nameBackground.color = redColor;
+        cardCountBackground.color = redColor;
+        cardHolderBackground.color = redColor;
+    }
+
+    public void setWhiteBackground() {
+        Color whiteColor = new Color(1, 1, 1, 1);
+        nameBackground.color = whiteColor;
+        cardCountBackground.color = whiteColor;
+        cardHolderBackground.color = whiteColor;
     }
 
     public void updateCardCount() {

@@ -31,6 +31,7 @@ public class Hand {
     private float handYPos = -3.5f;
 
     private bool isEnemy = false;
+    private bool allowMove = false;
 
     /*
         Method: addCard(Card card)
@@ -82,6 +83,9 @@ public class Hand {
     */
 
     public bool playCard(int cardID) {
+
+        if(!allowMove)
+            return false;
 
         /* Finds the card in the hand with the given cardID */
         Card card = null;
