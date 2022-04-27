@@ -27,6 +27,8 @@ public class Pile {
     private GameControl gameController;
     private float cardSize = 0.3f;
 
+    private Card previousCard;
+
     /* 
        Constructor: Pile(Vector2 pos)
        Description: Initializes visual component and sets position of pile
@@ -92,10 +94,17 @@ public class Pile {
 
         currentClass = card.getCardClass();
         currentType = card.getCardType();
-        if(topCard != null)
-            topCard.destroy();
+
+        if(topCard != null) {
+            if(previousCard != null)
+                previousCard.destroy();
+            previousCard = topCard;
+            previousCard.setLayer(-5);
+        }
+
         topCard = card;
-        topCard.setCardPos(pilePos);
+        topCard.getCardController().doLerpPos(pilePos, 0.1f);
+        topCard.getCardController().doLerpScale(topCard.getCardScale(), cardSize, 0.1f);
         topCard.setCardScale(cardSize);
         topCardControl = card.getCardController();
         topCardControl.setCanPlay(false);

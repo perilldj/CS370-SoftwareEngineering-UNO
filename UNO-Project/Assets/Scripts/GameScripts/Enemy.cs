@@ -1,6 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
+using System.Collections.Generic;  
 using UnityEngine;
+using TMPro;
 
 public static class RandomNames {
     private static List<string> names = new List<string> {"Sophia", "Aiden", "Emma", "Jackson", "Isabella",
@@ -49,6 +50,10 @@ public class Enemy {
     private string name;
 
     private GameControl gameController;
+
+    private TMP_Text nameText;
+    private TMP_Text cardCount;
+
     private GameObject enemyObject;
     private Hand hand;
 
@@ -58,8 +63,19 @@ public class Enemy {
     private const float CARD_SIZE = 0.1f;
 
     public Enemy(Vector2 pos, GameObject enemyPrefab) {
-        if(isAI)
+
+        enemyObject = GameObject.Instantiate(enemyPrefab);
+        enemyObject.transform.position = new Vector3(pos.x, pos.y, 0.0f);
+
+        // o_o
+        nameText = enemyObject.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        cardCount = enemyObject.gameObject.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
+
+        if(isAI) {
             name = RandomNames.getRandomName();
+            nameText.text = name;
+        }       
+
         uiLocation = pos;
         hand = new Hand();
         hand.setHandOffsetX(uiLocation.x);
@@ -67,8 +83,33 @@ public class Enemy {
         hand.setHandWidth(HAND_WIDTH);
         hand.setCardSize(CARD_SIZE);
         hand.setIsEnemy(true);
-        enemyObject = GameObject.Instantiate(enemyPrefab);
-        enemyObject.transform.position = new Vector3(pos.x, pos.y, 0.0f);
+
+    }
+
+    public bool attemptRandomMove() {
+        
+        Card card;
+
+        for(int i = 0; i < hand.getHandSize(); i++) {
+            card = hand.get(i);
+            if(hand.playCard(card.getCardID())) {
+                updateCardCount();
+                return true;
+            }
+        }
+
+        return true;
+
+    }
+
+    public void updateCardCount() {
+        cardCount.text = hand.getHandSize().ToString();
+        Debug.Log(hand.getHandSize());
+    }
+
+    public void addCard(Card card) {
+        hand.addCard(card);
+        updateCardCount();
     }
 
     public Hand getHand() {

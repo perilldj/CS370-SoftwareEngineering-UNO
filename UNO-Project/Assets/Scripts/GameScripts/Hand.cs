@@ -81,7 +81,7 @@ public class Hand {
                     be played to the pile.
     */
 
-    public void playCard(int cardID) {
+    public bool playCard(int cardID) {
 
         /* Finds the card in the hand with the given cardID */
         Card card = null;
@@ -98,7 +98,10 @@ public class Hand {
             removeCard(index);
             handSize--;
             ajustCardPositions();
+            return true;
         }
+
+        return false;
 
     }
 
@@ -124,6 +127,14 @@ public class Hand {
 
     public void setIsEnemy(bool val) {
         isEnemy = val;
+    }
+
+    public Card get(int index) {
+        return cards[index];
+    }
+
+    public int getHandSize() {
+        return handSize;
     }
 
 }

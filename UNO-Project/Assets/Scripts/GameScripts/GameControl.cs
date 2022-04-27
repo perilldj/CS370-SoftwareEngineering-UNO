@@ -86,14 +86,13 @@ public class GameControl : MonoBehaviour {
         RandomNames.clearUsedNames();
 
         Enemy enemy = new Enemy(new Vector2(-7.0f,0), enemyPrefab);
-        enemy.getHand().addCard(deckScript.drawCard());
-        enemy.getHand().addCard(deckScript.drawCard());
-        enemy.getHand().addCard(deckScript.drawCard());
-        enemy.getHand().addCard(deckScript.drawCard());
-        enemy.getHand().addCard(deckScript.drawCard());
-        enemy.getHand().addCard(deckScript.drawCard());
-        enemy.getHand().addCard(deckScript.drawCard());
-        enemy.getHand().addCard(deckScript.drawCard());
+        enemy.addCard(deckScript.drawCard());
+        enemy.addCard(deckScript.drawCard());
+        enemy.addCard(deckScript.drawCard());
+        enemy.addCard(deckScript.drawCard());
+        enemy.addCard(deckScript.drawCard());
+        enemy.addCard(deckScript.drawCard());
+        enemy.addCard(deckScript.drawCard());
     }
 
     // Update is called once per frame
