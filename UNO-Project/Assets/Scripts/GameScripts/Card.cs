@@ -89,6 +89,8 @@ public class Card {
     private int layer = 0;
     private float scale = 0.3f;
 
+    private bool isFaceDown = false;
+
     /*
         Method: createOnScreenCard()
         Description: Creates a visual card on-screen thats tied to this class.
@@ -98,6 +100,33 @@ public class Card {
         this.card = cardPrefab;
         this.currentHand = currentHand;
         this.id = id;
+    }
+
+    public void flipCard() {
+        
+        Texture2D class_texture, type_texture;
+        
+        if(isFaceDown) {
+            
+            class_texture = deck.getTexture(cardClass);   //Get class texture
+            /* If a card class is a wild card or a +4 card, there is no type necessary, this
+            checks for that and gets the appropriate texture */
+            if(cardClass == CardTypes.WILD_CARD || cardClass == CardTypes.PLUS_FOUR_CARD)
+                type_texture = deck.getTexture(CardTypes.NONE);
+            else
+                type_texture = deck.getTexture(cardType);
+
+        } else {
+
+            class_texture = deck.getTexture(CardTypes.BACK_CARD);
+            type_texture = deck.getTexture(CardTypes.NONE);
+
+        }
+
+        isFaceDown = !isFaceDown;
+        cardClassRenderer.sprite = Sprite.Create(class_texture, new Rect(0.0f, 0.0f, class_texture.width, class_texture.height), new Vector2(0.5f, 0.5f), 100.0f);
+        cardTypeRenderer.sprite = Sprite.Create(type_texture, new Rect(0.0f, 0.0f, type_texture.width, type_texture.height), new Vector2(0.5f, 0.5f), 100.0f);
+
     }
 
     public void createOnScreenCard(bool isEnemy) {
@@ -114,10 +143,14 @@ public class Card {
             else
                 type_texture = deck.getTexture(cardType);
 
+            isFaceDown = false;
+
         } else {
 
             class_texture = deck.getTexture(CardTypes.BACK_CARD);
             type_texture = deck.getTexture(CardTypes.NONE);
+
+            isFaceDown = true;
 
         }
 

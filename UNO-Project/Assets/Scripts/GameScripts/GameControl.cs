@@ -33,6 +33,7 @@ public class GameControl : MonoBehaviour {
 
     [SerializeField]
     private List<Vector2> enemyPositions;
+    private List<Enemy> enemies = new List<Enemy>();
 
     [SerializeField]
     private GameObject deck;
@@ -85,14 +86,10 @@ public class GameControl : MonoBehaviour {
 
         RandomNames.clearUsedNames();
 
-        Enemy enemy = new Enemy(new Vector2(-7.0f,0), enemyPrefab);
-        enemy.addCard(deckScript.drawCard());
-        enemy.addCard(deckScript.drawCard());
-        enemy.addCard(deckScript.drawCard());
-        enemy.addCard(deckScript.drawCard());
-        enemy.addCard(deckScript.drawCard());
-        enemy.addCard(deckScript.drawCard());
-        enemy.addCard(deckScript.drawCard());
+        for(int i = 0; i < enemyPositions.Count; i++) {
+            enemies.Add(new Enemy(enemyPositions[i], enemyPrefab));
+        }
+        
     }
 
     // Update is called once per frame

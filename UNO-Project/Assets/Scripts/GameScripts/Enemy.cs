@@ -67,14 +67,13 @@ public class Enemy {
         enemyObject = GameObject.Instantiate(enemyPrefab);
         enemyObject.transform.position = new Vector3(pos.x, pos.y, 0.0f);
 
-        // o_o
         nameText = enemyObject.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TMP_Text>();
         cardCount = enemyObject.gameObject.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
 
         if(isAI) {
             name = RandomNames.getRandomName();
             nameText.text = name;
-        }       
+        }     
 
         uiLocation = pos;
         hand = new Hand();
@@ -83,6 +82,8 @@ public class Enemy {
         hand.setHandWidth(HAND_WIDTH);
         hand.setCardSize(CARD_SIZE);
         hand.setIsEnemy(true);
+
+        updateCardCount();  
 
     }
 
@@ -104,7 +105,6 @@ public class Enemy {
 
     public void updateCardCount() {
         cardCount.text = hand.getHandSize().ToString();
-        Debug.Log(hand.getHandSize());
     }
 
     public void addCard(Card card) {

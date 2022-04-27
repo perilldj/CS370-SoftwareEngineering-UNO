@@ -226,9 +226,9 @@ MonoBehaviour:
   enemyPrefab: {fileID: 4689517163721536408, guid: e0bd26b07626acf4384f577f645c6191, type: 3}
   enemyPositions:
   - {x: -6.39, y: 3.27}
-  - {x: -6.12, y: 0.2}
-  - {x: 6.5, y: 0.2}
-  - {x: 5.46, y: 3.27}
+  - {x: -6.82, y: 0.2}
+  - {x: 6.34, y: 3.27}
+  - {x: 6.87, y: 0.2}
   deck: {fileID: 151214507652611868, guid: 7867e678b40210241bcea0cb92617ac6, type: 3}
 --- !u!4 &1392481743
 Transform:
