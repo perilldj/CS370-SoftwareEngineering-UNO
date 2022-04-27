@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class RandomNames {
-    private static List<string> names = {"Sophia", "Aiden", "Emma", "Jackson", "Isabella",
-                                         "Olivia", "Liam", "Ava", "Jacob", "Madison", "Noah",
-                                         "Emily", "Riley", "Ryan", "Alexander", "Layla", "Jack"};
+    private static List<string> names = new List<string> {"Sophia", "Aiden", "Emma", "Jackson", "Isabella",
+                                                          "Olivia", "Liam", "Ava", "Jacob", "Madison", "Noah",
+                                                          "Emily", "Riley", "Ryan", "Alexander", "Layla", "Jack"};
 
     private static List<int> usedNames;
 
     private static bool isNameUsed(int index) {
-        for(int i = 0; i < usedNames.Count; i++) {
+        for(int i = 0; i < usedNames.Count; i++)
             if(usedNames[i] == index)
                 return true;
         return false;
@@ -22,14 +22,14 @@ public static class RandomNames {
 
     public static string getRandomName() {
 
-        var random = new Random();
-        int randomIndex = random.Next(names.Count);
+        System.Random ran = new System.Random();
+        int randomIndex = ran.Next(0, names.Count);
 
         int attempts = 5; //Insurance this doesn't get stuck in an infinite loop
         while(attempts > 0) {
             attempts--;
             if(isNameUsed(randomIndex))
-                randomIndex = random.Next(names.Count)
+                randomIndex = ran.Next(0, names.Count);
             else
                 return names[randomIndex];
         }
@@ -37,6 +37,7 @@ public static class RandomNames {
         return ":)"; 
 
     }
+
 }
 
 public class Enemy {
@@ -53,11 +54,7 @@ public class Enemy {
     private const float HAND_OFFSET_Y = 0.0f;
 
     public Enemy(Vector2 pos) {
-        if(isAI)
-    }
-
-    private void checkNameAvailability(string name) {
-        
+        //if(isAI)
     }
 
 }
