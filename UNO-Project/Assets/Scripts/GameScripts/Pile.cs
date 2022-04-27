@@ -24,6 +24,8 @@ public class Pile {
     private BackgroundController backgroundController;
     private GameControl gameController;
 
+
+    
     /* 
        Constructor: Pile(Vector2 pos)
        Description: Initializes visual component and sets position of pile
@@ -46,7 +48,7 @@ public class Pile {
 
         /* If card is a wild card */
         if(card.getCardClass() == CardTypes.WILD_CARD) {
-            setTopCard(card);
+            setTopCard(card); 
             //Do wild
             return true;
         }

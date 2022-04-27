@@ -36,8 +36,13 @@ public class GameControl : MonoBehaviour {
 
     private CardControl currentCard = null;
 
+
+
+
     // Start is called before the first frame update
     void Start() {
+        //Color Picker
+        //colorPicker.SetActive(false);
 
         deck = Instantiate(deck);
         deckScript = deck.GetComponent<Deck>();
@@ -64,6 +69,11 @@ public class GameControl : MonoBehaviour {
 
         pile.setBackgroundController(backgroundController);
         pile.setGameController(this);
+
+
+    
+
+
 
     }
 
