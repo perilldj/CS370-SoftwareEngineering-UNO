@@ -32,6 +32,9 @@ public class GameControl : MonoBehaviour {
     private GameObject enemyPrefab;
 
     [SerializeField]
+    private List<Vector2> enemyPositions;
+
+    [SerializeField]
     private GameObject deck;
     private Deck deckScript;
     private Vector2 deckPos = new Vector2(-1.0f, 0.0f); // I hate hard coding positions like this, but it will do for now

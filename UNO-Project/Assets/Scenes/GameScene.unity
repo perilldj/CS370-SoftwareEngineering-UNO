@@ -223,6 +223,12 @@ MonoBehaviour:
   cam: {fileID: 1506238023}
   backgroundObject: {fileID: 1342363789190302614, guid: aa1388f8b4b057d4fb4fe6f7b394d0d8, type: 3}
   soundController: {fileID: 0}
+  enemyPrefab: {fileID: 0}
+  enemyPositions:
+  - {x: -6.39, y: 3.27}
+  - {x: -6.12, y: 0.2}
+  - {x: 6.5, y: 0.2}
+  - {x: 5.46, y: 3.27}
   deck: {fileID: 151214507652611868, guid: 7867e678b40210241bcea0cb92617ac6, type: 3}
 --- !u!4 &1392481743
 Transform:
