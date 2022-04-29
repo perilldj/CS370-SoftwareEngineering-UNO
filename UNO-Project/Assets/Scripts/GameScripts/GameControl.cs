@@ -53,7 +53,6 @@ public class GameControl : MonoBehaviour {
     private Hand playerHand;
 
     private int opponentCount;
-    private Hand[] enemyHands;
 
     private CardControl currentCard = null;
 

@@ -143,6 +143,9 @@ public class Hand {
 
     public void setCanMove(bool val) {
         canMove = val;
+        for(int i = 0; i < handSize; i++) {
+            cards[i].setCurrentHand(this);
+        }
     }
 
 }
