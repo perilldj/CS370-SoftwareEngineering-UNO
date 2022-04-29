@@ -24,8 +24,7 @@ public class Pile {
     private BackgroundController backgroundController;
     private GameControl gameController;
 
-
-    
+   
     /* 
        Constructor: Pile(Vector2 pos)
        Description: Initializes visual component and sets position of pile

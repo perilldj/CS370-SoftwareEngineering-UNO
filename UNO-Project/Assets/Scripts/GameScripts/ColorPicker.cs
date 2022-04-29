@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ColorPicker : MonoBehaviour
 {
-
+    public Card card;
     public GameObject colorPicker; 
     public GameObject gameController;
     // Start is called before the first frame update
@@ -14,8 +14,12 @@ public class ColorPicker : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+
+    void Update() {
+        if (card.getCardClass() == CardTypes.WILD_CARD) {
+            colorPicker.SetActive(true);
+        }
         
     }
+
 }
