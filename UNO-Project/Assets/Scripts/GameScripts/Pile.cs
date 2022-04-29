@@ -50,11 +50,11 @@ public class Pile {
         }
 
         topCard = card;
-        topCard.getCardController().doLerpPos(pilePos, 0.1f);
+        topCard.getCardController().doLerpPos(pilePos, 0.1f, true);
         topCard.getCardController().doLerpScale(topCard.getCardScale(), cardSize, 0.1f);
         topCard.setCardScale(cardSize);
+        topCard.setCurrentHand(null);
         topCardControl = card.getCardController();
-        topCardControl.setCanPlay(false);
         topCardControl.stopHover();
 
         if(backgroundController != null)
@@ -146,11 +146,11 @@ public class Pile {
         }
 
         topCard = card;
-        topCard.getCardController().doLerpPos(pilePos, 0.3f);
+        topCard.getCardController().doLerpPos(pilePos, 0.3f, true);
         topCard.getCardController().doLerpScale(topCard.getCardScale(), cardSize, 0.3f);
         topCard.setCardScale(cardSize);
         topCardControl = card.getCardController();
-        topCardControl.setCanPlay(false);
+        topCard.setCurrentHand(null);
         topCardControl.stopHover();
 
         if(backgroundController != null)

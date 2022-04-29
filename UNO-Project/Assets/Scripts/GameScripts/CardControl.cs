@@ -35,8 +35,8 @@ public class CardControl : MonoBehaviour {
     private float currentRiseHeight = 0;
     
     private bool canRise = false;
-    private bool canPlay = true;
     private bool lockHover = false;
+    private bool playEnable = true;
 
     void Start() { }
 
@@ -59,8 +59,8 @@ public class CardControl : MonoBehaviour {
 
     }
 
-    public void doLerpPos(Vector2 targetPos, float duration) {
-        StartCoroutine(lerpPos(targetPos, duration));
+    public void doLerpPos(Vector2 targetPos, float duration, bool disableHover) {
+        StartCoroutine(lerpPos(targetPos, duration, disableHover));
     }
 
     public void doLerpScale(float startScale, float goalScale, float duration) {
@@ -72,7 +72,7 @@ public class CardControl : MonoBehaviour {
         Description: When called the card will slide to the target position for the given duration in seconds
     */
 
-    private IEnumerator lerpPos(Vector2 targetPos, float duration) {
+    private IEnumerator lerpPos(Vector2 targetPos, float duration, bool disableHover) {
         float time = 0;
         owningCard.setCardPos(transform.position);
         Vector2 startPos = transform.position;
@@ -82,7 +82,8 @@ public class CardControl : MonoBehaviour {
             time += Time.deltaTime; //Increments elapsed time by deltaTime
             yield return null;
         }
-        setCanRise(true);
+        if(!disableHover)
+            setCanRise(true);
         setIsHovering(false);
         owningCard.setCardPos(targetPos);
         
@@ -147,21 +148,11 @@ public class CardControl : MonoBehaviour {
     }
 
     /*
-        Method: setCanPlay(bool val)
-        Description: Sets the ability for you to play this card to the pile.
-    */
-
-    public void setCanPlay(bool val) {
-        canPlay = val;
-    }
-
-    /*
         Method: OnMouseDown()
         Description: Triggered when this card is clicked, makes an attempt to play the card.
     */
 
     private void OnMouseDown() {
-        if(canPlay)
             owningCard.onCardClick();
     }
 
@@ -173,6 +164,15 @@ public class CardControl : MonoBehaviour {
     public void stopHover() {
         direction = -1.0f;
         lockHover = true;
+    }
+
+    public bool getIsHovering() {
+        return isHovering;
+    }
+
+    public void setPlayEnable(bool val) {
+        playEnable = val;
+        Debug.Log("canPlay set to: " + val + "\nCard info: C: " + owningCard.getCardClass() + " T: " + owningCard.getCardType());
     }
 
 }

@@ -96,9 +96,8 @@ public class Card {
         Description: Creates a visual card on-screen thats tied to this class.
     */
 
-    public Card(GameObject cardPrefab, Hand currentHand, int id) {
+    public Card(GameObject cardPrefab, int id) {
         this.card = cardPrefab;
-        this.currentHand = currentHand;
         this.id = id;
     }
 
@@ -162,8 +161,7 @@ public class Card {
         cardControl.setOwningCard(this);
         
         if(isEnemy) {
-            cardControl.setCanPlay(true);
-            cardControl.stopHover();
+            cardControl.setPlayEnable(false);
         }
 
         /* Gets cards on screen sprite objects */
@@ -191,7 +189,9 @@ public class Card {
     */
 
     public void onCardClick() {
+        Debug.Log(currentHand);
         if(currentHand != null) {
+            Debug.Log("AAA");
             currentHand.playCard(id);
         }
     }
@@ -321,6 +321,10 @@ public class Card {
 
     public GameObject getCardObject() {
         return card;
+    }
+
+    public void setCurrentHand(Hand hand) {
+        currentHand = hand;
     }
 
 }

@@ -23,7 +23,7 @@ public class SpinDirectionController : MonoBehaviour {
     private float decelleration = 500.0f;
     private const float ACCELLERATED_SPIN_SPEED = 600.0f;
 
-    private float transitionSpeed = 2.0f;
+    private float transitionSpeed = 8.0f;
     private float currentWidth = -1.5f;
 
     /*

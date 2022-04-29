@@ -29,7 +29,7 @@ public class Deck : MonoBehaviour {
     private GameObject cardPrefab;
 
     private Queue<Card> deck = new Queue<Card>();   //Queue for deck to be stored
-    public Hand hand;                               //Reference to player's hand (A better way for multiple hands needs to be made)
+    public Hand hand;                               
     public Pile pile;
 
     private int idCount = 0; //Counter to assign unique IDs to the cards
@@ -106,7 +106,7 @@ public class Deck : MonoBehaviour {
     */
 
     private void addCard(List<Card> deck, int cardClass, int cardType) {
-        Card newCard = new Card(cardPrefab, hand, idCount);
+        Card newCard = new Card(cardPrefab, idCount);
         idCount++;
         newCard.setCardClass(cardClass);
         newCard.setCardType(cardType);

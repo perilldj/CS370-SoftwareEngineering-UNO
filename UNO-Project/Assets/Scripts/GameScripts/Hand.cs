@@ -19,8 +19,6 @@ public class Hand {
     /* List of cards in hand */
     private List<Card> cards = new List<Card>();
 
-    private bool isPlayerHand = true;
-
     public Pile pile;
 
     private int handSize = 0;
@@ -40,12 +38,13 @@ public class Hand {
     */
 
     public void addCard(Card card) {
+
+        card.setCurrentHand(this);
         handSize++;                        //Increment handSize
-        if(!isPlayerHand)
-            card.getCardController().setCanPlay(false);
         cards.Add(card);                   //Add card to hand
         card.createOnScreenCard(isEnemy);  //Add card to screen
         ajustCardPositions();              //Update positions of the cards
+
     }
 
     /* 
@@ -69,7 +68,7 @@ public class Hand {
         int count = 1;
         foreach(Card card in cards) {                           //Loops through every card in hand
             currentX += spacing;                                //Increments x position by calculated spacing
-            card.getCardController().doLerpPos(new Vector2(currentX + handOffsetX, handYPos), 0.2f);
+            card.getCardController().doLerpPos(new Vector2(currentX + handOffsetX, handYPos), 0.2f, isEnemy);
             card.getCardController().doLerpScale(card.getCardScale(), cardSize, 0.2f);
             card.setLayer(count);                               //Increments render layer (z coordinate)
             count++;                                            //Increments count
@@ -99,6 +98,7 @@ public class Hand {
 
         /* If the move attempt is successful remove it from the hand and make necessary ajustments */
         if(pile.attemptMove(card)) {
+
             removeCard(index);
             handSize--;
             ajustCardPositions();
@@ -107,10 +107,6 @@ public class Hand {
 
         return false;
 
-    }
-
-    public void setIsPlayerHand(bool val) {
-        isPlayerHand = val;
     }
 
     public void setCardSize(float val) {
@@ -131,6 +127,10 @@ public class Hand {
 
     public void setIsEnemy(bool val) {
         isEnemy = val;
+    }
+
+    public bool getIsEnemy() {
+        return isEnemy;
     }
 
     public Card get(int index) {

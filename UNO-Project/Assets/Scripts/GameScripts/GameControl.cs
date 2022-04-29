@@ -191,11 +191,9 @@ public class GameControl : MonoBehaviour {
 
             turnIndex += turnDirection;
             if(turnIndex > playerIndex)
-                turnIndex = 0;
+                turnIndex = turnIndex - playerIndex - 1;
             if(turnIndex < 0)
                 turnIndex = playerIndex;
-
-            Debug.Log(turnIndex);
 
         }
 
@@ -220,11 +218,12 @@ public class GameControl : MonoBehaviour {
                 if(currentCard != null)
                     currentCard.setIsHovering(false);
                 currentCard = cardControl;
-                cardControl.setIsHovering(true);
+                if(!cardControl.getIsHovering())
+                    cardControl.setIsHovering(true);
             }
         } else
-            if(currentCard != null)
-                    currentCard.setIsHovering(false);
+            if(currentCard != null && currentCard.getIsHovering())
+                currentCard.setIsHovering(false);
 
     }
 
@@ -250,6 +249,7 @@ public class GameControl : MonoBehaviour {
 
     public void skipPlayed() {
         directionController.doSpeedup();
+        turnIndex += turnDirection;
     }
 
 }

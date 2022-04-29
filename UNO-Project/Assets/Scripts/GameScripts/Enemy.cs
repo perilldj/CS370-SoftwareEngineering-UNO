@@ -110,7 +110,7 @@ public class Enemy {
             }
         }
 
-        return true;
+        return false;
 
     }
 
