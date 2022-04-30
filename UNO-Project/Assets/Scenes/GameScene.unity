@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &332997601
+--- !u!1 &1331261389
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -953,13 +953,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< HEAD
 --- !u!114 &995711751
+=======
+--- !u!114 &1331261390
+>>>>>>> main
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 995711750}
+=======
+  m_GameObject: {fileID: 1331261389}
+>>>>>>> main
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
@@ -972,13 +980,21 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
+<<<<<<< HEAD
 --- !u!114 &995711752
+=======
+--- !u!114 &1331261391
+>>>>>>> main
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 995711750}
+=======
+  m_GameObject: {fileID: 1331261389}
+>>>>>>> main
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
@@ -987,12 +1003,17 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
+<<<<<<< HEAD
 --- !u!4 &995711753
+=======
+--- !u!4 &1331261392
+>>>>>>> main
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 995711750}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -1001,6 +1022,15 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
+=======
+  m_GameObject: {fileID: 1331261389}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+>>>>>>> main
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1392481741
 GameObject:
@@ -1036,6 +1066,13 @@ MonoBehaviour:
   cam: {fileID: 1506238023}
   backgroundObject: {fileID: 1342363789190302614, guid: aa1388f8b4b057d4fb4fe6f7b394d0d8, type: 3}
   soundController: {fileID: 0}
+  enemyPrefab: {fileID: 4689517163721536408, guid: e0bd26b07626acf4384f577f645c6191, type: 3}
+  turnIndicator: {fileID: 1870447802043415906, guid: fd1f0a59d5c53784b8158fc890735704, type: 3}
+  enemyPositions:
+  - {x: -6.82, y: 0.2}
+  - {x: -6.39, y: 3.27}
+  - {x: 6.34, y: 3.27}
+  - {x: 6.87, y: 0.2}
   deck: {fileID: 151214507652611868, guid: 7867e678b40210241bcea0cb92617ac6, type: 3}
 --- !u!4 &1392481743
 Transform:
@@ -1458,8 +1495,7 @@ Transform:
   m_GameObject: {fileID: 2093811505}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -3.5, z: 0.211}
-  m_LocalScale: {x: 15, y: 1.5, z: -1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 8.5, y: 1.5, z: -1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1

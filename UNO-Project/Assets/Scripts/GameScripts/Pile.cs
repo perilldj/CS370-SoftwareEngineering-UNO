@@ -10,19 +10,23 @@ using UnityEngine;
     Methods:
         public Pile(Vector2 pos)
         public bool attemptMove(Card card)
+        public void setBackgroundController(BackgroundController backgroundController)
+        public void setGameController(GameControl gameController)
 
     Author: perilldj
 */
 
 public class Pile {
 
-    private Card topCard;
-    private CardControl topCardControl;
+    private CardControl topCard;
     private Vector2 pilePos;
     private int currentClass = CardTypes.BLUE_CARD;
     private int currentType = CardTypes.ONE_CARD;
     private BackgroundController backgroundController;
     private GameControl gameController;
+    private float cardSize = 0.3f;
+
+    private CardControl previousCard;
 
    
     /* 
@@ -30,10 +34,56 @@ public class Pile {
        Description: Initializes visual component and sets position of pile
     */ 
 
-    public Pile(Vector2 pos, Card card) {
+    public Pile(Vector2 pos, Card card, GameObject prefab, GameControl gameController, Deck deck) {
+
         this.pilePos = pos;
-        card.createOnScreenCard();
-        setTopCard(card);
+        this.gameController = gameController;
+
+        GameObject newCard = GameObject.Instantiate(prefab);
+        CardControl cardControl = newCard.GetComponent<CardControl>();
+        cardControl.create(card.getCardClass(), card.getCardType(), card.getCardID(), false, null, deck);
+       
+        currentClass = card.getCardClass();
+        currentType = card.getCardType();
+
+        if(topCard != null) {
+            if(previousCard != null)
+                previousCard.destroy();
+            previousCard = topCard;
+            previousCard.setLayer(-5);
+        }
+
+        topCard = cardControl;
+        topCard.doLerpPos(pilePos, 0.1f, true);
+        topCard.doLerpScale(topCard.getCardScale(), cardSize, 0.1f);
+        topCard.setCardScale(cardSize);
+        topCard.disableHover();
+
+        if(backgroundController != null)
+            backgroundController.setBackgroundColor(card.getCardClass());
+
+    }
+
+    public bool canMove(Hand hand) {
+
+        CardControl card;
+
+        for(int i = 0; i < hand.getHandSize(); i++) {
+            card = hand.get(i);
+            if(card.getCardClass() == CardTypes.WILD_CARD)
+                return true;
+             if(card.getCardClass() == CardTypes.PLUS_FOUR_CARD)
+                return true;
+            if(topCard.getCardClass() == CardTypes.WILD_CARD || topCard.getCardClass() == CardTypes.PLUS_FOUR_CARD)
+                return true;
+            if(card.getCardType() == currentType)
+                return true;
+            if(card.getCardClass() == currentClass)
+                return true;
+        }
+
+        return false;
+
     }
 
     /*
@@ -43,7 +93,7 @@ public class Pile {
                      (will also execute the move if legal)
     */
 
-    public bool attemptMove(Card card) {
+    public bool attemptMove(CardControl card) {
 
         /* If card is a wild card */
         if(card.getCardClass() == CardTypes.WILD_CARD) {
@@ -85,17 +135,24 @@ public class Pile {
         Description: Sets the visual component of the pile
     */
 
-    private void setTopCard(Card card) {
+    private void setTopCard(CardControl card) {
 
         currentClass = card.getCardClass();
         currentType = card.getCardType();
-        if(topCard != null)
-            topCard.destroy();
+
+        if(topCard != null) {
+            if(previousCard != null)
+                previousCard.destroy();
+            previousCard = topCard;
+            previousCard.setLayer(-5);
+        }
+
         topCard = card;
-        topCard.setCardPos(pilePos);
-        topCardControl = card.getCardController();
-        topCardControl.setCanPlay(false);
-        topCardControl.stopHover();
+        topCard.doLerpPos(pilePos, 0.3f, true);
+        topCard.doLerpScale(topCard.getCardScale(), cardSize, 0.3f);
+        topCard.setCardScale(cardSize);
+        //topCard.setCurrentHand(null);
+        //topCard.disableHover();
 
         if(backgroundController != null)
             backgroundController.setBackgroundColor(card.getCardClass());
@@ -108,6 +165,8 @@ public class Pile {
             case CardTypes.PLUS_TWO_CARD : //Do +2
                 break;
         }
+
+        gameController.completedMove();
 
     }
 

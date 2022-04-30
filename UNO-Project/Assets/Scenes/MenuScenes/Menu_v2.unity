@@ -344,6 +344,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 453334061}
   m_OnClick:
     m_PersistentCalls:
+<<<<<<< HEAD
       m_Calls:
       - m_Target: {fileID: 355518986}
         m_TargetAssemblyTypeName: mainMenu_v2, Assembly-CSharp
@@ -357,6 +358,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+=======
+      m_Calls: []
+>>>>>>> main
 --- !u!114 &453334061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1431,8 +1435,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0fcee5f016764bcb8455ea9022e6422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   m_TextMeshPro: {fileID: 0}
   label: UNO
+=======
+>>>>>>> main
 --- !u!1 &1925912982
 GameObject:
   m_ObjectHideFlags: 0
@@ -1584,6 +1591,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2145979535}
   m_OnClick:
     m_PersistentCalls:
+<<<<<<< HEAD
       m_Calls:
       - m_Target: {fileID: 355518986}
         m_TargetAssemblyTypeName: mainMenu_v2, Assembly-CSharp
@@ -1597,6 +1605,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+=======
+      m_Calls: []
+>>>>>>> main
 --- !u!114 &2145979535
 MonoBehaviour:
   m_ObjectHideFlags: 0

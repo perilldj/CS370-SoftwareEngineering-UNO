@@ -3,7 +3,14 @@ guid: 029497eaf62d8634a9a7bb240900d70e
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - cardPrefab: {instanceID: 0}
+  - directionIndicatorObject: {instanceID: 0}
+  - cam: {instanceID: 0}
+  - backgroundObject: {instanceID: 0}
+  - soundController: {instanceID: 0}
+  - enemyPrefab: {fileID: 4689517163721536408, guid: e0bd26b07626acf4384f577f645c6191, type: 3}
+  - deck: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
