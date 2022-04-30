@@ -46,6 +46,9 @@ public class Pile {
         currentClass = card.getCardClass();
         currentType = card.getCardType();
 
+        if(currentClass == CardTypes.PLUS_FOUR_CARD || currentClass == CardTypes.WILD_CARD)
+            currentClass = CardTypes.BLUE_CARD;
+
         if(topCard != null) {
             if(previousCard != null)
                 previousCard.destroy();
@@ -73,8 +76,6 @@ public class Pile {
             if(card.getCardClass() == CardTypes.WILD_CARD)
                 return true;
              if(card.getCardClass() == CardTypes.PLUS_FOUR_CARD)
-                return true;
-            if(topCard.getCardClass() == CardTypes.WILD_CARD || topCard.getCardClass() == CardTypes.PLUS_FOUR_CARD)
                 return true;
             if(card.getCardType() == currentType)
                 return true;
@@ -106,11 +107,6 @@ public class Pile {
         if(card.getCardClass() == CardTypes.PLUS_FOUR_CARD) {
             setTopCard(card);
             //Do +4 wild
-            return true;
-        }
-
-        if(topCard.getCardClass() == CardTypes.WILD_CARD || topCard.getCardClass() == CardTypes.PLUS_FOUR_CARD) {
-            setTopCard(card);
             return true;
         }
 
@@ -176,6 +172,14 @@ public class Pile {
 
     public void setGameController(GameControl gameController) {
         this.gameController = gameController;
+    }
+
+    public CardControl getTopCard() {
+        return topCard;
+    }
+
+    public void setCurrentClass(int class_value) {
+        currentClass = class_value;
     }
 
 }

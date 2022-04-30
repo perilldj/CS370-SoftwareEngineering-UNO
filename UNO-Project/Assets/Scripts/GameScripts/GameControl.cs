@@ -63,6 +63,8 @@ public class GameControl : MonoBehaviour {
     private bool gameEnabled = true;
     private bool turnComplete = false;
 
+    private System.Random ran = new System.Random();
+
     // Start is called before the first frame update
     void Start() {
         //Color Picker
@@ -142,7 +144,6 @@ public class GameControl : MonoBehaviour {
             yield return new WaitForSeconds(0.1f);
         }
 
-        System.Random ran = new System.Random();
         playerIndex = enemies.Count;
         turnIndex = ran.Next(0, playerIndex + 1);
 
@@ -152,8 +153,11 @@ public class GameControl : MonoBehaviour {
 
     private IEnumerator gameLoop() {
 
+        CardControl playedCard;
+
         while(gameEnabled) {
 
+            playedCard = null;
             turnComplete = false;
 
             yield return new WaitForSeconds(1.0f);
@@ -186,6 +190,15 @@ public class GameControl : MonoBehaviour {
                 }
 
                 enemy.attemptRandomMove();
+
+                playedCard = pile.getTopCard();
+                if(playedCard.getCardClass() == CardTypes.WILD_CARD || playedCard.getCardClass() == CardTypes.PLUS_FOUR_CARD) {
+                    yield return new WaitForSeconds(0.75f);
+                    int randomColor = ran.Next(0, 3);
+                    backgroundController.setBackgroundColor(randomColor);
+                    pile.setCurrentClass(randomColor);
+                }
+
                 enemy.getHand().setCanMove(false);
                 enemy.setWhiteBackground();
 
@@ -196,6 +209,28 @@ public class GameControl : MonoBehaviour {
                 turnIndex = turnIndex - playerIndex - 1;
             if(turnIndex < 0)
                 turnIndex = playerIndex - Mathf.Abs(turnIndex) + 1;
+
+            playedCard = pile.getTopCard();
+            if(playedCard.getCardClass() == CardTypes.PLUS_FOUR_CARD || playedCard.getCardType() == CardTypes.PLUS_TWO_CARD) {
+
+                yield return new WaitForSeconds(0.5f);
+
+                int numOfCards = 0;
+
+                if(playedCard.getCardClass() == CardTypes.PLUS_FOUR_CARD)
+                    numOfCards = 4;
+                else
+                    numOfCards = 2;
+
+                for(int i = 0; i < numOfCards; i++) {
+                    if(turnIndex == playerIndex)
+                        playerHand.addCard(deckScript.drawCard(), cardPrefab);
+                    else
+                        enemies[turnIndex].addCard(deckScript.drawCard());
+                    yield return new WaitForSeconds(0.2f);
+                }
+
+            }
 
         }
 
