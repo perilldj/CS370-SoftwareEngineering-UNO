@@ -5,15 +5,15 @@ using TMPro;
 
 public class title : MonoBehaviour
 {
-    private TextMeshPro m_TextMeshPro;
+    private TMP_Text m_TextMeshPro;
 
     private string label = "UNO";
     
     void Awake() {
-        m_TextMeshPro = gameObject.GetComponent<TextMeshPro>() ?? gameObject.AddComponent<TextMeshPro>();
+        m_TextMeshPro = gameObject.GetComponent<TMP_Text>() ?? gameObject.AddComponent<TMP_Text>();
 
         m_TextMeshPro.text = label;
-        m_TextMeshPro.color = Color.red;
+        m_TextMeshPro.color = new Color(247, 0, 255, 1);
     }
 
     
