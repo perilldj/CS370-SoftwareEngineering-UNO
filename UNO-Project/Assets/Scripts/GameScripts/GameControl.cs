@@ -65,6 +65,8 @@ public class GameControl : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
+        //Color Picker
+        //colorPicker.SetActive(false);
 
         /* Creates a deck */
         deck = Instantiate(deck);
