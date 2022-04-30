@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ColorPicker : MonoBehaviour
 {
-    public Card card;
+    public CardControl card;
     public GameObject colorPicker; 
     public GameObject gameController;
     public GameControl game;
