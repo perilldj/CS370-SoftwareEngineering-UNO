@@ -17,9 +17,10 @@ using UnityEngine;
 public class Hand {
     
     /* List of cards in hand */
-    private List<Card> cards = new List<Card>();
+    private List<CardControl> cards = new List<CardControl>();
 
     public Pile pile;
+    public Deck deck;
 
     private int handSize = 0;
     private float cardSize = 0.2f;
@@ -37,14 +38,13 @@ public class Hand {
                      to the correct position by calling createOnScreenCard() and ajustCardPositions().
     */
 
-    public void addCard(Card card) {
-
-        card.setCurrentHand(this);
-        handSize++;                        //Increment handSize
-        cards.Add(card);                   //Add card to hand
-        card.createOnScreenCard(isEnemy);  //Add card to screen
-        ajustCardPositions();              //Update positions of the cards
-
+    public void addCard(Card card, GameObject prefab) {
+        GameObject newCard = GameObject.Instantiate(prefab);
+        CardControl cardControl = newCard.GetComponent<CardControl>();
+        cardControl.create(card.getCardClass(), card.getCardType(), card.getCardID(), isEnemy, this, deck);
+        handSize++;                                      //Increment handSize
+        cards.Add(cardControl);                          //Add card to hand
+        ajustCardPositions();                            //Update positions of the cards
     }
 
     /* 
@@ -66,10 +66,10 @@ public class Hand {
         float spacing = (1.0f / (float)(handSize + 1)) * handWidth;  //Calculates horizontal spacing
         float currentX = -(handWidth / 2);
         int count = 1;
-        foreach(Card card in cards) {                           //Loops through every card in hand
+        foreach(CardControl card in cards) {                           //Loops through every card in hand
             currentX += spacing;                                //Increments x position by calculated spacing
-            card.getCardController().doLerpPos(new Vector2(currentX + handOffsetX, handYPos), 0.2f, isEnemy);
-            card.getCardController().doLerpScale(card.getCardScale(), cardSize, 0.2f);
+            card.doLerpPos(new Vector2(currentX + handOffsetX, handYPos), 0.2f, isEnemy);
+            card.doLerpScale(card.getCardScale(), cardSize, 0.2f);
             card.setLayer(count);                               //Increments render layer (z coordinate)
             count++;                                            //Increments count
         }
@@ -87,7 +87,7 @@ public class Hand {
             return false;
 
         /* Finds the card in the hand with the given cardID */
-        Card card = null;
+        CardControl card = null;
         int index = 0;
         for(int i = 0; i < handSize; i++) {
             card = cards[i];
@@ -98,7 +98,6 @@ public class Hand {
 
         /* If the move attempt is successful remove it from the hand and make necessary ajustments */
         if(pile.attemptMove(card)) {
-
             removeCard(index);
             handSize--;
             ajustCardPositions();
@@ -133,7 +132,7 @@ public class Hand {
         return isEnemy;
     }
 
-    public Card get(int index) {
+    public CardControl get(int index) {
         return cards[index];
     }
 
@@ -143,9 +142,6 @@ public class Hand {
 
     public void setCanMove(bool val) {
         canMove = val;
-        for(int i = 0; i < handSize; i++) {
-            cards[i].setCurrentHand(this);
-        }
     }
 
 }

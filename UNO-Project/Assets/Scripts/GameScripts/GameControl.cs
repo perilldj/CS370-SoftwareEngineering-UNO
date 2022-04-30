@@ -85,8 +85,9 @@ public class GameControl : MonoBehaviour {
 
         /* Sets up the pile and adds the top card of the deck to it */
         Card firstCard = deckScript.drawCard();
-        pile = new Pile(pileLoc, firstCard, this);
+        pile = new Pile(pileLoc, firstCard, cardPrefab, this, deckScript);
         playerHand.pile = pile;
+        playerHand.deck = deckScript;
 
         /* Sets up the background color controller */
         backgroundObject = Instantiate(backgroundObject);
@@ -105,7 +106,7 @@ public class GameControl : MonoBehaviour {
         hidePlayerTurnIndicator();
 
         for(int i = 0; i < enemyPositions.Count; i++) {
-            enemies.Add(new Enemy(enemyPositions[i], enemyPrefab, pile));
+            enemies.Add(new Enemy(enemyPositions[i], enemyPrefab, pile, deckScript, this));
         }
 
         StartCoroutine(initializeGame());
@@ -135,7 +136,7 @@ public class GameControl : MonoBehaviour {
         }
 
         for(int j = 0; j < INITIAL_CARD_COUNT; j++) {
-            playerHand.addCard(deckScript.drawCard()); //might need a player class later
+            playerHand.addCard(deckScript.drawCard(), cardPrefab); //might need a player class later
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -160,7 +161,7 @@ public class GameControl : MonoBehaviour {
                 playerHand.setCanMove(true);
 
                 while(!pile.canMove(playerHand)) {
-                    playerHand.addCard(deckScript.drawCard());
+                    playerHand.addCard(deckScript.drawCard(), cardPrefab);
                     yield return new WaitForSeconds(0.8f);
                 }
 
@@ -192,7 +193,7 @@ public class GameControl : MonoBehaviour {
             if(turnIndex > playerIndex)
                 turnIndex = turnIndex - playerIndex - 1;
             if(turnIndex < 0)
-                turnIndex = playerIndex;
+                turnIndex = playerIndex - Mathf.Abs(turnIndex) + 1;
 
         }
 
@@ -217,11 +218,10 @@ public class GameControl : MonoBehaviour {
                 if(currentCard != null)
                     currentCard.setIsHovering(false);
                 currentCard = cardControl;
-                if(!cardControl.getIsHovering())
-                    cardControl.setIsHovering(true);
+                cardControl.setIsHovering(true);
             }
         } else
-            if(currentCard != null && currentCard.getIsHovering())
+            if(currentCard != null)
                 currentCard.setIsHovering(false);
 
     }
@@ -249,6 +249,10 @@ public class GameControl : MonoBehaviour {
     public void skipPlayed() {
         directionController.doSpeedup();
         turnIndex += turnDirection;
+    }
+
+    public GameObject getCardPrefab() {
+        return cardPrefab;
     }
 
 }

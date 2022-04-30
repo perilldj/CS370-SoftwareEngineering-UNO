@@ -106,11 +106,11 @@ public class Deck : MonoBehaviour {
     */
 
     private void addCard(List<Card> deck, int cardClass, int cardType) {
-        Card newCard = new Card(cardPrefab, idCount);
+        Card newCard = new Card(idCount);
         idCount++;
         newCard.setCardClass(cardClass);
         newCard.setCardType(cardType);
-        newCard.deck = this;
+        //newCard.deck = this;
         deck.Add(newCard);
     }
 

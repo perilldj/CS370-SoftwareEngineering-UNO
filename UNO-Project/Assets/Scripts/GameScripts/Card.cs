@@ -40,36 +40,13 @@ public static class CardTypes {
 
 /*
     Class: Card
-    Description: Object for a card game, has the capability to be on or off screen and still retain it's data
-                 A card has a class and a type, information of what makes a class and a type can be found in the CardTypes class.
-
-    Methods:   public void createOnScreenCard();
-               public void onCardClick();
-               public void destroy();
-               public CardControl getCardController();
-               public void setCardPos(Vector2 pos);
-               public void setLayer(int val);
-               public float getCardZ()
-               public void setCardScale(float val);
-               public void setCardClass(int cClass);
-               public void setCardType(int cType);
-               public int getCardClass();
-               public int getCardType();
-               public int getCardID();
-               public GameObject getCardObject();
+    Description: Object to represent a card, is not the physical card, but it serves as a way to hold information
+                 about cards within a shuffled deck.
 
     Author: perilldj
 */
 
 public class Card {
-
-    //Components for on screen card
-    private GameObject card;
-    private GameObject cardClassObject;
-    private GameObject cardTypeObject;
-    private SpriteRenderer cardClassRenderer;
-    private SpriteRenderer cardTypeRenderer;
-    private CardControl cardControl = null;
 
     //IDs for card class and type
     private int cardClass;
@@ -78,199 +55,13 @@ public class Card {
     //Unique identifier for the card
     private int id;
 
-    //Reference to the deck (To get card textures)
-    public Deck deck;
-
-    //Cards owning hand
-    public Hand currentHand = null;
-
-    //On screen data
-    private Vector2 position;
-    private int layer = 0;
-    private float scale = 0.3f;
-
-    private bool isFaceDown = false;
-
-    /*
-        Method: createOnScreenCard()
-        Description: Creates a visual card on-screen thats tied to this class.
-    */
-
-    public Card(GameObject cardPrefab, int id) {
-        this.card = cardPrefab;
+    public Card(int id) {
         this.id = id;
-    }
-
-    public void flipCard() {
-        
-        Texture2D class_texture, type_texture;
-        
-        if(isFaceDown) {
-            
-            class_texture = deck.getTexture(cardClass);   //Get class texture
-            /* If a card class is a wild card or a +4 card, there is no type necessary, this
-            checks for that and gets the appropriate texture */
-            if(cardClass == CardTypes.WILD_CARD || cardClass == CardTypes.PLUS_FOUR_CARD)
-                type_texture = deck.getTexture(CardTypes.NONE);
-            else
-                type_texture = deck.getTexture(cardType);
-
-        } else {
-
-            class_texture = deck.getTexture(CardTypes.BACK_CARD);
-            type_texture = deck.getTexture(CardTypes.NONE);
-
-        }
-
-        isFaceDown = !isFaceDown;
-        cardClassRenderer.sprite = Sprite.Create(class_texture, new Rect(0.0f, 0.0f, class_texture.width, class_texture.height), new Vector2(0.5f, 0.5f), 100.0f);
-        cardTypeRenderer.sprite = Sprite.Create(type_texture, new Rect(0.0f, 0.0f, type_texture.width, type_texture.height), new Vector2(0.5f, 0.5f), 100.0f);
-
-    }
-
-    public void createOnScreenCard(bool isEnemy) {
-
-        Texture2D class_texture, type_texture;
-
-        if(!isEnemy) {
-
-            class_texture = deck.getTexture(cardClass);   //Get class texture
-            /* If a card class is a wild card or a +4 card, there is no type necessary, this
-            checks for that and gets the appropriate texture */
-            if(cardClass == CardTypes.WILD_CARD || cardClass == CardTypes.PLUS_FOUR_CARD)
-                type_texture = deck.getTexture(CardTypes.NONE);
-            else
-                type_texture = deck.getTexture(cardType);
-
-            isFaceDown = false;
-
-        } else {
-
-            class_texture = deck.getTexture(CardTypes.BACK_CARD);
-            type_texture = deck.getTexture(CardTypes.NONE);
-
-            isFaceDown = true;
-
-        }
-
-        /* Creates on screen game object */
-        card = GameObject.Instantiate(card);
-
-        /* Gets the card's card control script */
-        cardControl = card.GetComponent<CardControl>();
-        cardControl.setOwningCard(this);
-        
-        if(isEnemy) {
-            cardControl.setPlayEnable(false);
-        }
-
-        /* Gets cards on screen sprite objects */
-        cardClassObject = card.gameObject.transform.GetChild(0).gameObject;
-        cardTypeObject = cardClassObject.gameObject.transform.GetChild(0).gameObject;
-
-        /* Gets card's class and type SpriteRenderers */
-        cardClassRenderer = cardClassObject.GetComponent<SpriteRenderer>();
-        cardTypeRenderer = cardTypeObject.GetComponent<SpriteRenderer>();
-
-        /* Creates sprites for the SpriteRenderers*/
-        cardClassRenderer.sprite = Sprite.Create(class_texture, new Rect(0.0f, 0.0f, class_texture.width, class_texture.height), new Vector2(0.5f, 0.5f), 100.0f);
-        cardTypeRenderer.sprite = Sprite.Create(type_texture, new Rect(0.0f, 0.0f, type_texture.width, type_texture.height), new Vector2(0.5f, 0.5f), 100.0f);
-
-        /* Set scale and position */
-        setCardScale(scale);
-        setCardPos(deck.transform.position);
-
-    }
-
-    /*
-        Method: onCardClick()
-        Description: Gets called from the CardControl script when the in game card is clicked.
-                     Tells the owning hand (if it exists) that one of it's cards is attempting to be played.
-    */
-
-    public void onCardClick() {
-        Debug.Log(currentHand);
-        if(currentHand != null) {
-            Debug.Log("AAA");
-            currentHand.playCard(id);
-        }
-    }
-
-    /*
-        Method: destroy()
-        Description: destroys the on screen card in its entirety.
-    */
-
-    public void destroy() {
-        GameObject.Destroy(card);
-        GameObject.Destroy(cardClassObject);
-        GameObject.Destroy(cardTypeObject);
-    }
-
-    /*
-        Method: setCardPos(Vector2 pos)
-        Description: Sets the position of the on-screen card.
-    */
-    public void setCardPos(Vector2 pos) {
-        position = pos;
-        card.transform.position = new Vector3(pos.x, pos.y, layer * -0.02f);
-    }
-
-    /*
-        Method getCardController()
-        Decsription: Returns the CardControl script attached to the in-game card.
-    */
-
-    public CardControl getCardController() {
-        return cardControl;
-    }
-
-    /*
-        Method getCardPos()
-        Decsription: Returns a Vector2 which contains the position of the card.
-    */
-
-    public Vector2 getCardPos() {
-        return position;
-    }
-
-    /*
-        Method: setLayer(int val)
-        Description: Sets the layer of the on-screen card (z level, a higher layer means its ontop of lower levels)
-    */
-
-    public void setLayer(int val) {
-        layer = val;
-        card.transform.position = new Vector3(position.x, position.y, layer * -0.02f);
-    }
-
-    /*
-        Method: getCardZ()
-        Description: Returns the Z position equivalent of the card's layer.
-    */
-
-    public float getCardZ() {
-        return (float)layer * -0.02f;
-    }
-
-    /*
-        Method: setCardScale(float val)
-        Description: Sets the scale of the on-screen card.
-    */
-
-    public void setCardScale(float val) {
-        scale = val;
-        card.transform.localScale = new Vector3(val, val, val);
-    }
-
-    public float getCardScale() {
-        return scale;
     }
 
     /*
         Method: setCardClass(int cClass)
         Description: Sets the class of the card
-        Note: May need to be changed so it changes the on-screen card's texture as well.
     */
 
     public void setCardClass(int cClass) {
@@ -280,7 +71,6 @@ public class Card {
     /*
         Method: setCardType(int cType)
         Description: Sets the type of the card.
-        Note: May need to be changed so it changes the on-screen card's texture as well.
     */
 
     public void setCardType(int cType) {
@@ -312,19 +102,6 @@ public class Card {
 
     public int getCardID() {
         return id;
-    }
-
-    /*
-        Method: getCardObject()
-        Description: Returns a reference to the card's physical GameObject that it owns.
-    */
-
-    public GameObject getCardObject() {
-        return card;
-    }
-
-    public void setCurrentHand(Hand hand) {
-        currentHand = hand;
     }
 
 }

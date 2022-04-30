@@ -61,13 +61,17 @@ public class Enemy {
 
     private GameObject enemyObject;
     private Hand hand;
+    private Deck deck;
 
     private Vector2 uiLocation;
     private const float HAND_OFFSET_Y = -0.68f;
     private const float HAND_WIDTH = 3.0f;
     private const float CARD_SIZE = 0.1f;
 
-    public Enemy(Vector2 pos, GameObject enemyPrefab, Pile pile) {
+    public Enemy(Vector2 pos, GameObject enemyPrefab, Pile pile, Deck deck, GameControl gameController) {
+
+        this.deck = deck;
+        this.gameController = gameController;
 
         enemyObject = GameObject.Instantiate(enemyPrefab);
         enemyObject.transform.position = new Vector3(pos.x, pos.y, 0.0f);
@@ -92,6 +96,7 @@ public class Enemy {
         hand.setCardSize(CARD_SIZE);
         hand.setIsEnemy(true);
         hand.pile = pile;
+        hand.deck = deck;
 
         updateCardCount();  
 
@@ -99,7 +104,7 @@ public class Enemy {
 
     public bool attemptRandomMove() {
         
-        Card card;
+        CardControl card;
 
         for(int i = 0; i < hand.getHandSize(); i++) {
             card = hand.get(i);
@@ -133,7 +138,7 @@ public class Enemy {
     }
 
     public void addCard(Card card) {
-        hand.addCard(card);
+        hand.addCard(card, gameController.getCardPrefab());
         updateCardCount();
     }
 
