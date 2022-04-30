@@ -7,11 +7,15 @@ using UnityEngine;
     Class: Deck : MonoBehaviour
     Description: This script is attachable to a sprite that acts as a deck when clicked.
                  the script will manage everything to do with the deck including shuffling,
-                 creating cards, and managing card textures (may be changed)
+                 creating cards, and managing card textures. It also handles drawing cards
+                 from this deck.
 
-    Methods:
-        void Start()
-        public Texture2D getTexture(int index)
+    Methods:    void Start();
+                public Texture2D getTexture(int index);
+                public void initializeDeck();
+                public Card drawCard();
+                public void setDeckPos(Vector2 pos);
+        
 
     Author: perilldj
 */
@@ -21,17 +25,16 @@ public class Deck : MonoBehaviour {
     [SerializeField] /* List to load in all sprites */
     private List<Texture2D> cardSprites;
 
+    [SerializeField]
+    private GameObject cardPrefab;
+
     private Queue<Card> deck = new Queue<Card>();   //Queue for deck to be stored
-    private Hand hand = new Hand();                 //Reference to player's hand (A better way for multiple hands needs to be made)
+    public Hand hand;                               
+    public Pile pile;
 
-    /*
-        Method: Start()
-        Description: Initializes Deck by calling initializeDeckFunction
-    */
+    private int idCount = 0; //Counter to assign unique IDs to the cards
 
-    void Start() {
-        initializeDeck();
-    }
+    void Start() { }
 
     /*
         Method: getTexture(int index)
@@ -47,19 +50,22 @@ public class Deck : MonoBehaviour {
         Description: Creates and shuffles a deck into the deck Queue.
     */
 
-    private void initializeDeck() {
+    public void initializeDeck() {
 
         List<Card> orderedDeck = new List<Card>();
         List<Card> shufledDeck;
 
-        for(int i = 0; i < 6; i++) {        //This doesn't create the cards in correct proportions, way to many wild and +4s
-            for(int j = 6; j < 18; j++) {   //I need to rewrite this so it creates all the cards in the correct proportions -perilldj
-                Card newCard = new Card(); 
-                newCard.setCardClass(i);
-                newCard.setCardType(j);
-                newCard.deck = this;
-                orderedDeck.Add(newCard);
+        /* Adds every type of card in the correct proportions */
+        for(int i = 0; i < 4; i++) {
+
+            addCard(orderedDeck, CardTypes.WILD_CARD, 18);
+            addCard(orderedDeck, CardTypes.PLUS_FOUR_CARD, 18);
+
+            for(int j = 6; j < 18; j++) {
+                addCard(orderedDeck, i, j);
+                addCard(orderedDeck, i, j);
             }
+
         }
 
         /* Shufles the deck */
@@ -77,10 +83,44 @@ public class Deck : MonoBehaviour {
         Method: OnMouseDown()
         Description: Called when the sprite this script is added to is clicked. It adds a card
                      to the players hand while simultaneously removing it from the deck queue.
+
+        NOTE: Only used for debugging purposes
     */
 
     private void OnMouseDown() {
-        hand.addCard(deck.Dequeue());
+        //hand.addCard(drawCard());
+    }
+
+    /*
+        Method: drawCard()
+        Description: Draws and returns a card from the deck.
+    */
+
+    public Card drawCard() {
+        return deck.Dequeue();
+    }
+
+    /*
+        Method: addCard(List<Card> deck, int cardClass, int cardType)
+        Description: Creates a card with specified class and type, and adds it to a list of cards.
+    */
+
+    private void addCard(List<Card> deck, int cardClass, int cardType) {
+        Card newCard = new Card(idCount);
+        idCount++;
+        newCard.setCardClass(cardClass);
+        newCard.setCardType(cardType);
+        //newCard.deck = this;
+        deck.Add(newCard);
+    }
+
+    /*
+        Method: setDeckPos(Vector2 pos)
+        Description: Sets on screen position of the deck.
+    */
+
+    public void setDeckPos(Vector2 pos) {
+        transform.position = pos;
     }
 
 }
