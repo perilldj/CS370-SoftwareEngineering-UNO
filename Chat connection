@@ -1,0 +1,27 @@
+// In the C# SDKs, the callbacks are defined in the `IChatClientListener` interface.
+// In the demos, we instantiate and use the ChatClient class to implement the IChatClientListener interface.
+chatClient = new ChatClient( this );
+chatClient.ChatRegion = "US";
+chatClient.Connect(chatAppId, chatAppVersion, new AuthenticationValues(userID));
+
+//Keeps connection and receives incoming messages in chat
+chatClient.Service();
+chatClient.Subscribe( new string[] { "channelA" } );
+chatClient.PublishMessage( "channelA", );
+
+// Allows for public messages in subscribed chats
+public class MyChatListner : IChatClientListener
+{
+    public void OnGetMessages( string channelName, string[] senders, object[] messages )
+    {
+       string msgs = "";
+       for ( int i = 0; i < senders.Length; i++ )
+       {
+           msgs = string.Format("{0}{1}={2}, ", msgs, senders[i], messages[i]);
+       }
+       Console.WriteLine( "OnGetMessages: {0} ({1}) > {2}", channelName, senders.Length, msgs );
+       // All public messages are automatically cached in `Dictionary<string, ChatChannel> PublicChannels`.
+       // So you don't have to keep track of them.
+       // The channel name is the key for `PublicChannels`.
+    }
+}
