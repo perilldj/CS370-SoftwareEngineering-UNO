@@ -4,31 +4,50 @@ using UnityEngine;
 
 public class ColorPicker : MonoBehaviour
 {
-    public CardControl card;
-    public GameObject colorPicker; 
+
     public GameObject gameController;
-    public GameControl game;
-    public Pile pile;
+    public int color;
+
+    private GameControl gameControl;
 
     public GameObject gameScene;
+
     // Start is called before the first frame update
-    void Start()
-    {
-        colorPicker.SetActive(false);
+    void Start() {
+        gameControl = gameController.GetComponent<GameControl>();
+        gameControl.addButton(this);
     }
 
     // Update is called once per frame
 
-    void Update() {
-        
-        if(pile.attemptMove(card)) {
-            if (card.getCardClass() == CardTypes.WILD_CARD) {
-                gameScene = GameObject.Find("GameController");
-                gameScene.SetActive(false);
-                colorPicker.SetActive(true);
-                
-            } 
-        }
+    void Update() { }
+
+    public void ChooseBlue() {
+        Debug.Log("Blue");
+        gameControl.selectColor(color);
+    }
+
+    public void ChooseRed() {
+        Debug.Log("Red");
+        gameControl.selectColor(color);
+    }
+
+    public void ChooseGreen() {
+        Debug.Log("Green");
+        gameControl.selectColor(color);
+    }
+
+    public void ChooseYellow() {
+        Debug.Log("Yellow");
+        gameControl.selectColor(color);
+    }
+
+    public void deactivate() {
+        gameObject.SetActive(false);
+    }
+
+    public void activate() {
+        gameObject.SetActive(true);
     }
 
 }

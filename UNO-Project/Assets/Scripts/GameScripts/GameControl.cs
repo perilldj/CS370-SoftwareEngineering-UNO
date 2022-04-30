@@ -50,6 +50,8 @@ public class GameControl : MonoBehaviour {
     private Pile pile;
     private Vector2 pileLoc = new Vector2(1.0f, 0.0f);
 
+    private List<ColorPicker> buttons = new List<ColorPicker>();
+
     private Hand playerHand;
 
     private int opponentCount;
@@ -63,12 +65,13 @@ public class GameControl : MonoBehaviour {
     private bool gameEnabled = true;
     private bool turnComplete = false;
 
+    private bool colorSelected = false;
+    private int selectedColor = 0;
+
     private System.Random ran = new System.Random();
 
     // Start is called before the first frame update
     void Start() {
-        //Color Picker
-        //colorPicker.SetActive(false);
 
         /* Creates a deck */
         deck = Instantiate(deck);
@@ -173,6 +176,17 @@ public class GameControl : MonoBehaviour {
 
                 yield return new WaitUntil(() => turnComplete == true);
                 playerHand.setCanMove(false);
+
+                playedCard = pile.getTopCard();
+                if(playedCard.getCardClass() == CardTypes.WILD_CARD || playedCard.getCardClass() == CardTypes.PLUS_FOUR_CARD) {
+                    colorSelected = false;
+                    for(int i = 0; i < buttons.Count; i++)
+                        buttons[i].activate();
+                    yield return new WaitUntil(() => colorSelected == true);
+                    backgroundController.setBackgroundColor(selectedColor);
+                    pile.setCurrentClass(selectedColor);
+                }
+
                 hidePlayerTurnIndicator();
 
             } else {
@@ -227,7 +241,7 @@ public class GameControl : MonoBehaviour {
                         playerHand.addCard(deckScript.drawCard(), cardPrefab);
                     else
                         enemies[turnIndex].addCard(deckScript.drawCard());
-                    yield return new WaitForSeconds(0.2f);
+                    yield return new WaitForSeconds(0.4f);
                 }
 
             }
@@ -290,6 +304,18 @@ public class GameControl : MonoBehaviour {
 
     public GameObject getCardPrefab() {
         return cardPrefab;
+    }
+
+    public void addButton(ColorPicker button) {
+        buttons.Add(button);
+        button.deactivate();
+    }
+
+    public void selectColor(int color) {
+        colorSelected = true;
+        selectedColor = color;
+        for(int i = 0; i < buttons.Count; i++)
+            buttons[i].deactivate();
     }
 
 }
