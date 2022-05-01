@@ -5,8 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class mainMenu_v2 : MonoBehaviour
 {
+
+    void Start() {
+        Application.runInBackground = true;
+    }
+
     public void PlayGame () {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void JoinMultiplayer() {
+        SceneManager.LoadScene("Connecting");
     }
 
     public void QuitGame () {

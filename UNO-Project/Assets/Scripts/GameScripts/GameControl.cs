@@ -78,6 +78,8 @@ public class GameControl : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
 
+        Application.runInBackground = true;
+
         /* Creates a deck */
         deck = Instantiate(deck);
         deckScript = deck.GetComponent<Deck>();

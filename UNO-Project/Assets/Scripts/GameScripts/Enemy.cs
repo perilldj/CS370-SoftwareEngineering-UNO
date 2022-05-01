@@ -7,7 +7,9 @@ using UnityEngine.UI;
 public static class RandomNames {
     private static List<string> names = new List<string> {"Sophia", "Aiden", "Emma", "Jackson", "Isabella",
                                                           "Olivia", "Liam", "Ava", "Jacob", "Madison", "Noah",
-                                                          "Emily", "Riley", "Ryan", "Alexander", "Layla", "Jack"};
+                                                          "Emily", "Riley", "Ryan", "Alexander", "Layla", "Jack",
+                                                          "James", "William", "David", "Lisa", "Daniel", "Amanda",
+                                                          "Emma", "Justin", "Gary", "Brandon", "John"};
 
     private static List<int> usedNames = new List<int>();
     private static System.Random ran = new System.Random();
