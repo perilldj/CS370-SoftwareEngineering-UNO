@@ -44,6 +44,9 @@ public class GameControl : MonoBehaviour {
     private List<Enemy> enemies = new List<Enemy>();
 
     [SerializeField]
+    private GameObject winScreen;
+
+    [SerializeField]
     private GameObject deck;
     private Deck deckScript;
     private Vector2 deckPos = new Vector2(-1.0f, 0.0f);
@@ -108,6 +111,8 @@ public class GameControl : MonoBehaviour {
         pile.setBackgroundController(backgroundController);
 
         RandomNames.clearUsedNames();
+
+        winScreen.SetActive(false);
 
         soundManager = soundController.GetComponent<SoundManager>();
 
@@ -182,6 +187,12 @@ public class GameControl : MonoBehaviour {
                 playerHand.setCanMove(false);
                 soundManager.playRandomCardSound();
 
+                int winVal = checkWin();
+                if(winVal != -1) {
+                    displayWin(winVal);
+                    break;
+                }
+
                 playedCard = pile.getTopCard(); 
                 if(playedCard.getCardClass() == CardTypes.WILD_CARD)
                     soundManager.playSound(SoundID.COLOR_CHANGE);
@@ -217,8 +228,14 @@ public class GameControl : MonoBehaviour {
                 }
 
                 enemy.attemptRandomMove();
-                soundManager.playRandomCardSound();
 
+                int winVal = checkWin();
+                if(winVal != -1) {
+                    displayWin(winVal);
+                    break;
+                }
+
+                soundManager.playRandomCardSound();
                 playedCard = pile.getTopCard();
 
                 if(playedCard.getCardClass() == CardTypes.WILD_CARD)
@@ -297,6 +314,30 @@ public class GameControl : MonoBehaviour {
             if(currentCard != null)
                 currentCard.setIsHovering(false);
 
+    }
+
+    private int checkWin() {
+        if(playerHand.getHandSize() == 0)
+            return playerIndex;
+
+        for(int i = 0; i < enemies.Count; i++) {
+            if(enemies[i].getHand().getHandSize() == 0)
+                return i;
+        }
+
+        return -1;
+    }
+
+    private void displayWin(int val) {
+        winScreen.SetActive(true);
+        TMP_Text winText = winScreen.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        
+        if(val == playerIndex)
+            winText.text = "YOU WIN!!!!";
+        else
+            winText.text = enemies[val].getName().ToUpper() + " WINS!";
+
+        soundManager.playSound(SoundID.WIN_SOUND);
     }
 
     /*

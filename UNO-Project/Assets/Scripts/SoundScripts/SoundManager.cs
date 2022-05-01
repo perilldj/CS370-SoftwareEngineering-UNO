@@ -13,6 +13,7 @@ public static class SoundID {
     public const int PLUS_TWO = 4;
     public const int PLUS_FOUR = 5;
     public const int COLOR_CHANGE = 6;
+    public const int WIN_SOUND = 7;
 
 }
 
