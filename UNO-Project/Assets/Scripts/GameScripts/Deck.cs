@@ -97,6 +97,8 @@ public class Deck : MonoBehaviour {
     */
 
     public Card drawCard() {
+        if(deck.Count == 0) //Ensures there is always cards in the deck (with the same proportions)
+            initializeDeck();
         return deck.Dequeue();
     }
 

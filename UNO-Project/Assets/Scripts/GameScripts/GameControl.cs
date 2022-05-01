@@ -46,7 +46,7 @@ public class GameControl : MonoBehaviour {
     [SerializeField]
     private GameObject deck;
     private Deck deckScript;
-    private Vector2 deckPos = new Vector2(-1.0f, 0.0f); // I hate hard coding positions like this, but it will do for now
+    private Vector2 deckPos = new Vector2(-1.0f, 0.0f);
 
     private Pile pile;
     private Vector2 pileLoc = new Vector2(1.0f, 0.0f);
@@ -60,6 +60,7 @@ public class GameControl : MonoBehaviour {
     private CardControl currentCard = null;
 
     private const int INITIAL_CARD_COUNT = 7;
+    private int numOfOpponents = 4; // Maximum is 4
     private int turnDirection = 1;
     private int turnIndex = 0;
     private int playerIndex;
@@ -115,7 +116,7 @@ public class GameControl : MonoBehaviour {
         turnIndicatorText = turnIndicator.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TMP_Text>();
         hidePlayerTurnIndicator();
 
-        for(int i = 0; i < 2; i++) {
+        for(int i = 0; i < numOfOpponents; i++) {
             enemies.Add(new Enemy(enemyPositions[i], enemyPrefab, pile, deckScript, this));
         }
 
