@@ -146,4 +146,8 @@ public class Enemy {
         return hand;
     }
 
+    public string getName() {
+        return name;
+    }
+
 }

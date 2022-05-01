@@ -68,7 +68,7 @@ public class Hand {
         int count = 1;
         foreach(CardControl card in cards) {                           //Loops through every card in hand
             currentX += spacing;                                //Increments x position by calculated spacing
-            card.doLerpPos(new Vector2(currentX + handOffsetX, handYPos), 0.2f, isEnemy);
+            card.doLerpPos(new Vector2(currentX + handOffsetX, handYPos), 0.3f, isEnemy);
             card.doLerpScale(card.getCardScale(), cardSize, 0.2f);
             card.setLayer(count);                               //Increments render layer (z coordinate)
             count++;                                            //Increments count

@@ -28,7 +28,8 @@ public class GameControl : MonoBehaviour {
     private BackgroundController backgroundController;
 
     [SerializeField]
-    private GameObject soundController; //TODO: Figure out sounds
+    private GameObject soundController;
+    private SoundManager soundManager;
 
     [SerializeField]
     private GameObject enemyPrefab;
@@ -43,12 +44,17 @@ public class GameControl : MonoBehaviour {
     private List<Enemy> enemies = new List<Enemy>();
 
     [SerializeField]
+    private GameObject winScreen;
+
+    [SerializeField]
     private GameObject deck;
     private Deck deckScript;
-    private Vector2 deckPos = new Vector2(-1.0f, 0.0f); // I hate hard coding positions like this, but it will do for now
+    private Vector2 deckPos = new Vector2(-1.0f, 0.0f);
 
     private Pile pile;
     private Vector2 pileLoc = new Vector2(1.0f, 0.0f);
+
+    private List<ColorPicker> buttons = new List<ColorPicker>();
 
     private Hand playerHand;
 
@@ -57,16 +63,20 @@ public class GameControl : MonoBehaviour {
     private CardControl currentCard = null;
 
     private const int INITIAL_CARD_COUNT = 7;
+    private int numOfOpponents = 4; // Maximum is 4
     private int turnDirection = 1;
     private int turnIndex = 0;
     private int playerIndex;
     private bool gameEnabled = true;
     private bool turnComplete = false;
 
+    private bool colorSelected = false;
+    private int selectedColor = 0;
+
+    private System.Random ran = new System.Random();
+
     // Start is called before the first frame update
     void Start() {
-        //Color Picker
-        //colorPicker.SetActive(false);
 
         /* Creates a deck */
         deck = Instantiate(deck);
@@ -102,12 +112,16 @@ public class GameControl : MonoBehaviour {
 
         RandomNames.clearUsedNames();
 
+        winScreen.SetActive(false);
+
+        soundManager = soundController.GetComponent<SoundManager>();
+
         turnIndicator = Instantiate(turnIndicator);
         turnIndicatorImage = turnIndicator.gameObject.transform.GetChild(0).GetChild(0).GetComponent<Image>();
         turnIndicatorText = turnIndicator.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TMP_Text>();
         hidePlayerTurnIndicator();
 
-        for(int i = 0; i < enemyPositions.Count; i++) {
+        for(int i = 0; i < numOfOpponents; i++) {
             enemies.Add(new Enemy(enemyPositions[i], enemyPrefab, pile, deckScript, this));
         }
 
@@ -142,7 +156,6 @@ public class GameControl : MonoBehaviour {
             yield return new WaitForSeconds(0.1f);
         }
 
-        System.Random ran = new System.Random();
         playerIndex = enemies.Count;
         turnIndex = ran.Next(0, playerIndex + 1);
 
@@ -152,8 +165,11 @@ public class GameControl : MonoBehaviour {
 
     private IEnumerator gameLoop() {
 
+        CardControl playedCard;
+
         while(gameEnabled) {
 
+            playedCard = null;
             turnComplete = false;
 
             yield return new WaitForSeconds(1.0f);
@@ -169,6 +185,32 @@ public class GameControl : MonoBehaviour {
 
                 yield return new WaitUntil(() => turnComplete == true);
                 playerHand.setCanMove(false);
+                soundManager.playRandomCardSound();
+
+                int winVal = checkWin();
+                if(winVal != -1) {
+                    displayWin(winVal);
+                    break;
+                }
+
+                playedCard = pile.getTopCard(); 
+                if(playedCard.getCardClass() == CardTypes.WILD_CARD)
+                    soundManager.playSound(SoundID.COLOR_CHANGE);
+                else if(playedCard.getCardClass() == CardTypes.PLUS_FOUR_CARD)
+                    soundManager.playSound(SoundID.PLUS_FOUR);
+                else if(playedCard.getCardType() == CardTypes.PLUS_TWO_CARD)
+                    soundManager.playSound(SoundID.PLUS_TWO);
+
+                
+                if(playedCard.getCardClass() == CardTypes.WILD_CARD || playedCard.getCardClass() == CardTypes.PLUS_FOUR_CARD) {
+                    colorSelected = false;
+                    for(int i = 0; i < buttons.Count; i++)
+                        buttons[i].activate();
+                    yield return new WaitUntil(() => colorSelected == true);
+                    backgroundController.setBackgroundColor(selectedColor);
+                    pile.setCurrentClass(selectedColor);
+                }
+
                 hidePlayerTurnIndicator();
 
             } else {
@@ -186,6 +228,30 @@ public class GameControl : MonoBehaviour {
                 }
 
                 enemy.attemptRandomMove();
+
+                int winVal = checkWin();
+                if(winVal != -1) {
+                    displayWin(winVal);
+                    break;
+                }
+
+                soundManager.playRandomCardSound();
+                playedCard = pile.getTopCard();
+
+                if(playedCard.getCardClass() == CardTypes.WILD_CARD)
+                    soundManager.playSound(SoundID.COLOR_CHANGE);
+                else if(playedCard.getCardClass() == CardTypes.PLUS_FOUR_CARD)
+                    soundManager.playSound(SoundID.PLUS_FOUR);
+                else if(playedCard.getCardType() == CardTypes.PLUS_TWO_CARD)
+                    soundManager.playSound(SoundID.PLUS_TWO);
+
+                if(playedCard.getCardClass() == CardTypes.WILD_CARD || playedCard.getCardClass() == CardTypes.PLUS_FOUR_CARD) {
+                    yield return new WaitForSeconds(0.75f);
+                    int randomColor = ran.Next(0, 3);
+                    backgroundController.setBackgroundColor(randomColor);
+                    pile.setCurrentClass(randomColor);
+                }
+
                 enemy.getHand().setCanMove(false);
                 enemy.setWhiteBackground();
 
@@ -196,6 +262,28 @@ public class GameControl : MonoBehaviour {
                 turnIndex = turnIndex - playerIndex - 1;
             if(turnIndex < 0)
                 turnIndex = playerIndex - Mathf.Abs(turnIndex) + 1;
+
+            playedCard = pile.getTopCard();
+            if(playedCard.getCardClass() == CardTypes.PLUS_FOUR_CARD || playedCard.getCardType() == CardTypes.PLUS_TWO_CARD) {
+
+                yield return new WaitForSeconds(0.5f);
+
+                int numOfCards = 0;
+
+                if(playedCard.getCardClass() == CardTypes.PLUS_FOUR_CARD)
+                    numOfCards = 4;
+                else
+                    numOfCards = 2;
+
+                for(int i = 0; i < numOfCards; i++) {
+                    if(turnIndex == playerIndex)
+                        playerHand.addCard(deckScript.drawCard(), cardPrefab);
+                    else
+                        enemies[turnIndex].addCard(deckScript.drawCard());
+                    yield return new WaitForSeconds(0.4f);
+                }
+
+            }
 
         }
 
@@ -228,12 +316,37 @@ public class GameControl : MonoBehaviour {
 
     }
 
+    private int checkWin() {
+        if(playerHand.getHandSize() == 0)
+            return playerIndex;
+
+        for(int i = 0; i < enemies.Count; i++) {
+            if(enemies[i].getHand().getHandSize() == 0)
+                return i;
+        }
+
+        return -1;
+    }
+
+    private void displayWin(int val) {
+        winScreen.SetActive(true);
+        TMP_Text winText = winScreen.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        
+        if(val == playerIndex)
+            winText.text = "YOU WIN!!!!";
+        else
+            winText.text = enemies[val].getName().ToUpper() + " WINS!";
+
+        soundManager.playSound(SoundID.WIN_SOUND);
+    }
+
     /*
         Method: reversePlayed()
         Description: Called whenever a reverse is played, reverses the direction of the spinner.
     */
 
     public void reversePlayed() {
+        soundManager.playSound(SoundID.REVERSE_SOUND);
         if(directionController.getIsSpinningClockwise()) {
             directionController.spinCounterClockwise();
             turnDirection = -1;
@@ -249,12 +362,25 @@ public class GameControl : MonoBehaviour {
     */
 
     public void skipPlayed() {
+        soundManager.playSound(SoundID.SKIP_SOUND);
         directionController.doSpeedup();
         turnIndex += turnDirection;
     }
 
     public GameObject getCardPrefab() {
         return cardPrefab;
+    }
+
+    public void addButton(ColorPicker button) {
+        buttons.Add(button);
+        button.deactivate();
+    }
+
+    public void selectColor(int color) {
+        colorSelected = true;
+        selectedColor = color;
+        for(int i = 0; i < buttons.Count; i++)
+            buttons[i].deactivate();
     }
 
 }
