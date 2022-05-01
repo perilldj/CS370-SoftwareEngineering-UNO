@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &995711750
+--- !u!1 &1150412352
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,37 +131,63 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1331261392}
-  - component: {fileID: 995711752}
+  - component: {fileID: 1150412354}
+  - component: {fileID: 1150412353}
   m_Layer: 0
-  m_Name: EventSystem
+  m_Name: SoundPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &995711752
+--- !u!114 &1150412353
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 995711750}
+  m_GameObject: {fileID: 1150412352}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Script: {fileID: 11500000, guid: d0067fe7365de3e46be043a0f28a2c2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
---- !u!4 &1331261392
+  sounds:
+  - clip: {fileID: 8300000, guid: e2af53b0b8c88d24393e16aa273e39ec, type: 3}
+    volume: 0.5
+    pitch: 1
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 77f2981bb0a079e489e8b3e3516aa1f5, type: 3}
+    volume: 0.5
+    pitch: 1
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: ed91317230349b944a6a270b31c15115, type: 3}
+    volume: 0.5
+    pitch: 1
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: b8b1462614d1d4c45b9397fe3688bf16, type: 3}
+    volume: 0.5
+    pitch: 1
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: ec6e72183e3e3ce4fa01cf4e7fc14889, type: 3}
+    volume: 0.5
+    pitch: 1
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: d74d75655fc40b64d8b3dc4d935c3088, type: 3}
+    volume: 0.5
+    pitch: 1
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 6706a247fb671ef4eb8691de51503c1f, type: 3}
+    volume: 0.5
+    pitch: 1
+    source: {fileID: 0}
+--- !u!4 &1150412354
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 995711750}
+  m_GameObject: {fileID: 1150412352}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -397,6 +423,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1194988622857437013, guid: 89eb45cb51ed782448228f0078fc5218, type: 3}
+      propertyPath: gameController
+      value: 
+      objectReference: {fileID: 1392481741}
+    - target: {fileID: 2602910217465132144, guid: 89eb45cb51ed782448228f0078fc5218, type: 3}
+      propertyPath: gameController
+      value: 
+      objectReference: {fileID: 1392481741}
     - target: {fileID: 5515364393814591469, guid: 89eb45cb51ed782448228f0078fc5218, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -445,13 +479,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: ColorPicker
       objectReference: {fileID: 0}
-    - target: {fileID: 5515364394560276121, guid: 89eb45cb51ed782448228f0078fc5218, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+    - target: {fileID: 8344349923945861384, guid: 89eb45cb51ed782448228f0078fc5218, type: 3}
+      propertyPath: gameController
       value: 
-      objectReference: {fileID: 11500000, guid: 93f14dc2c5dc34955885bb6c2dc12f5e, type: 3}
-    - target: {fileID: 5515364394560276121, guid: 89eb45cb51ed782448228f0078fc5218, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1392481741}
+    - target: {fileID: 8587674163936100651, guid: 89eb45cb51ed782448228f0078fc5218, type: 3}
+      propertyPath: gameController
+      value: 
+      objectReference: {fileID: 1392481741}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89eb45cb51ed782448228f0078fc5218, type: 3}
