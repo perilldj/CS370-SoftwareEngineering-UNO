@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Photon.Pun;
+using Photon.Realtime;
 
 /* 
     Class: GameControl : MonoBehavior
@@ -51,6 +53,8 @@ public class GameControl : MonoBehaviour {
     private Deck deckScript;
     private Vector2 deckPos = new Vector2(-1.0f, 0.0f);
 
+    private Queue<Card> multiplayerDeck = new Queue<Card>();
+
     private Pile pile;
     private Vector2 pileLoc = new Vector2(1.0f, 0.0f);
 
@@ -72,6 +76,8 @@ public class GameControl : MonoBehaviour {
 
     private bool colorSelected = false;
     private int selectedColor = 0;
+
+    private int playerID = -1;
 
     private System.Random ran = new System.Random();
 
@@ -123,12 +129,56 @@ public class GameControl : MonoBehaviour {
         turnIndicatorText = turnIndicator.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TMP_Text>();
         hidePlayerTurnIndicator();
 
-        for(int i = 0; i < numOfOpponents; i++) {
-            enemies.Add(new Enemy(enemyPositions[i], enemyPrefab, pile, deckScript, this));
+        if(ClientInfo.isMultiplayer) {
+
+            playerID = int.Parse(PhotonNetwork.LocalPlayer.NickName);
+            int enemyCount = -1;
+            for(int i = 0; i < ClientInfo.numOfPlayers; i++) {
+                if(i != playerID) {
+                    enemyCount++;
+                    enemies.Add(new Enemy(enemyPositions[i], enemyPrefab, pile, deckScript, this, false));
+                    enemies[enemyCount].setName(ClientInfo.playerNames[i]);
+                    enemies[enemyCount].setID(i);
+                }
+            }
+
+        } else {
+
+            for(int i = 0; i < numOfOpponents; i++) {
+                enemies.Add(new Enemy(enemyPositions[i], enemyPrefab, pile, deckScript, this, true));
+            }
+
+        }
+        
+        if(ClientInfo.isMultiplayer)
+            StartCoroutine(initializeMultiplayerGame());
+        else
+            StartCoroutine(initializeGame());
+        
+    }
+
+    private int convertIDToIndex(int id) {
+
+        if(id == playerID)
+            return playerIndex;
+
+        for(int i = 0; i < enemies.Count; i++) {
+            if(enemies[i].getID() == id)
+                return i;
         }
 
-        StartCoroutine(initializeGame());
-        
+        return -1;
+
+    }
+
+    private int convertIndexToID(int index) {
+        if(index == playerIndex)
+            return playerID;
+
+        if(enemies[index] != null)
+            return enemies[index].getID();
+
+        return -1;
     }
 
     private void hidePlayerTurnIndicator() {
@@ -139,6 +189,36 @@ public class GameControl : MonoBehaviour {
     private void showPlayerTurnIndicator() {
         turnIndicatorImage.enabled = true;
         turnIndicatorText.enabled = true;
+    }
+
+    private IEnumerator hostInitializeMultiplayerGame() {
+        int id = ran.Next(0, ClientInfo.numOfPlayers);
+        base.photonView.RPC("RPC_SetInitialMoveID", RpcTarget.Others, new object[] {id});
+        turnIndex = convertIDToIndex();
+        for(int i = 0; i < 500; i++) {
+            Card card = deck.drawCard();
+            base.photonView.RPC("addCardToDrawQueue", RpcTarget.Others, new object[] {card.getCardClass(), card.getCardType(), card.getCardID()});
+        }
+        StartCoroutine(initializeMultiplayerGame());
+    }
+
+    private IEnumerator initializeMultiplayerGame() {
+
+        yield return new WaitForSeconds(3.0f);
+
+        for(int i = 0; i < enemies.Count; i++) {
+            for(int j = 0; j < INITIAL_CARD_COUNT; j++) {
+                enemies[i].addCard(multiplayerDeck.Dequeue());
+                yield return new WaitForSeconds(0.1f);
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        for(int j = 0; j < INITIAL_CARD_COUNT; j++) {
+            playerHand.addCard(multiplayerDeck.Dequeue(), cardPrefab); //might need a player class later
+            yield return new WaitForSeconds(0.1f);
+        }
+
     }
 
     private IEnumerator initializeGame() {
@@ -383,6 +463,29 @@ public class GameControl : MonoBehaviour {
         selectedColor = color;
         for(int i = 0; i < buttons.Count; i++)
             buttons[i].deactivate();
+    }
+
+    [PunRPC]
+    public void RPC_SetInitialMoveID(int id) {
+        turnIndex = convertIDToIndex(id);
+    }
+
+    [PunRPC]
+    public void RPC_ReceivePlayCard(int id, int cardID) {
+        enemies[convertIDToIndex(id)].playCard(cardID);
+    }
+
+    [PunRPC]
+    public void RPC_SendPlayCard(int id, int cardID) {
+
+    }
+
+    [PunRPC]
+    public void addCardToDrawQueue(int card_class, int card_type, int cardID) {
+        Card card = new Card(cardID);
+        card.setCardClass(card_class);
+        card.setCardType(card_type);
+        multiplayerDeck.Enqueue(card);
     }
 
 }

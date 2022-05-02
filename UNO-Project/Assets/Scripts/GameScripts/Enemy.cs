@@ -49,6 +49,7 @@ public static class RandomNames {
 public class Enemy {
     
     private bool isAI = true;
+    private int id = -1;
 
     private string name;
 
@@ -70,7 +71,9 @@ public class Enemy {
     private const float HAND_WIDTH = 3.0f;
     private const float CARD_SIZE = 0.1f;
 
-    public Enemy(Vector2 pos, GameObject enemyPrefab, Pile pile, Deck deck, GameControl gameController) {
+    public Enemy(Vector2 pos, GameObject enemyPrefab, Pile pile, Deck deck, GameControl gameController, bool isAI) {
+
+        this.isAI = isAI;
 
         this.deck = deck;
         this.gameController = gameController;
@@ -121,6 +124,12 @@ public class Enemy {
 
     }
 
+    public void playCard(int cardID) {
+        hand.setCanMove(true);
+        hand.playCard(cardID);
+        hand.setCanMove(false);
+    }
+
     public void setRedBackground() {
         Color redColor = new Color(1, 0, 0, 1);
         nameBackground.color = redColor;
@@ -150,6 +159,19 @@ public class Enemy {
 
     public string getName() {
         return name;
+    }
+
+    public void setName(string name) {
+        this.name = name;
+        nameText.text = name;
+    }
+
+    public int getID() {
+        return id;
+    }
+
+    public void setID(int id) {
+        this.id = id;
     }
 
 }

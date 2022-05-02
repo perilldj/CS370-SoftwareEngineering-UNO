@@ -23,10 +23,7 @@ public class LobbyControl : MonoBehaviourPunCallbacks {
         if(!isNullOrEmpty(ClientInfo.username) && !isNullOrEmpty(ClientInfo.roomPassword)) {
             ClientInfo.isHost = true;
             PhotonNetwork.CreateRoom(ClientInfo.roomPassword);
-        } else {
-            Debug.Log("Cant create");
         }
-        
     }
 
     public void joinRoom() {
@@ -35,8 +32,6 @@ public class LobbyControl : MonoBehaviourPunCallbacks {
         if(!isNullOrEmpty(ClientInfo.username) && !isNullOrEmpty(ClientInfo.roomPassword)) {
             ClientInfo.isHost = false;
             PhotonNetwork.JoinRoom(joinInput.text);
-        } else {
-            Debug.Log("AAAAAAA");
         }
     }
 
