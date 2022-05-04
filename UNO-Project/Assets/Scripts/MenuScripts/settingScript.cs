@@ -40,7 +40,7 @@ public class settingScript : MonoBehaviour
         Screen.SetResolution(res.width, res.height, Screen.fullScreen);
     }
     public void Back () {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
+        SceneManager.LoadScene("Menu_v2");
     }
 
     public void SetVolume(float volume) {

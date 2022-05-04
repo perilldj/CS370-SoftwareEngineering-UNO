@@ -13,7 +13,7 @@ public class mainMenu_v2 : MonoBehaviour
     public void PlayGame () {
         ClientInfo.isMultiplayer = false;
         ClientInfo.isHost = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("GameScene");
     }
 
     public void JoinMultiplayer() {
@@ -21,7 +21,7 @@ public class mainMenu_v2 : MonoBehaviour
     }
 
     public void Setting () {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+        SceneManager.LoadScene("Setting");
     }
     
     public void QuitGame () {
