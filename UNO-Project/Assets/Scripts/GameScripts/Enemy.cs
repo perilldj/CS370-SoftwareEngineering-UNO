@@ -7,7 +7,9 @@ using UnityEngine.UI;
 public static class RandomNames {
     private static List<string> names = new List<string> {"Sophia", "Aiden", "Emma", "Jackson", "Isabella",
                                                           "Olivia", "Liam", "Ava", "Jacob", "Madison", "Noah",
-                                                          "Emily", "Riley", "Ryan", "Alexander", "Layla", "Jack"};
+                                                          "Emily", "Riley", "Ryan", "Alexander", "Layla", "Jack",
+                                                          "James", "William", "David", "Lisa", "Daniel", "Amanda",
+                                                          "Emma", "Justin", "Gary", "Brandon", "John"};
 
     private static List<int> usedNames = new List<int>();
     private static System.Random ran = new System.Random();
@@ -47,6 +49,7 @@ public static class RandomNames {
 public class Enemy {
     
     private bool isAI = true;
+    private int id = -1;
 
     private string name;
 
@@ -68,7 +71,9 @@ public class Enemy {
     private const float HAND_WIDTH = 3.0f;
     private const float CARD_SIZE = 0.1f;
 
-    public Enemy(Vector2 pos, GameObject enemyPrefab, Pile pile, Deck deck, GameControl gameController) {
+    public Enemy(Vector2 pos, GameObject enemyPrefab, Pile pile, Deck deck, GameControl gameController, bool isAI) {
+
+        this.isAI = isAI;
 
         this.deck = deck;
         this.gameController = gameController;
@@ -108,15 +113,21 @@ public class Enemy {
 
         for(int i = 0; i < hand.getHandSize(); i++) {
             card = hand.get(i);
-            if(hand.playCard(card.getCardID())) {
+            if(hand.playCard(card.getCardID(), true)) {
                 updateCardCount();
-                card.flipCard();
                 return true;
             }
         }
 
         return false;
 
+    }
+
+    public void playCard(int cardID) {
+        hand.setCanMove(true);
+        hand.playCard(cardID, true);
+        hand.setCanMove(false);
+        updateCardCount();
     }
 
     public void setRedBackground() {
@@ -148,6 +159,19 @@ public class Enemy {
 
     public string getName() {
         return name;
+    }
+
+    public void setName(string name) {
+        this.name = name;
+        nameText.text = name;
+    }
+
+    public int getID() {
+        return id;
+    }
+
+    public void setID(int id) {
+        this.id = id;
     }
 
 }
