@@ -113,9 +113,8 @@ public class Enemy {
 
         for(int i = 0; i < hand.getHandSize(); i++) {
             card = hand.get(i);
-            if(hand.playCard(card.getCardID())) {
+            if(hand.playCard(card.getCardID(), true)) {
                 updateCardCount();
-                card.flipCard();
                 return true;
             }
         }
@@ -126,8 +125,9 @@ public class Enemy {
 
     public void playCard(int cardID) {
         hand.setCanMove(true);
-        hand.playCard(cardID);
+        hand.playCard(cardID, true);
         hand.setCanMove(false);
+        updateCardCount();
     }
 
     public void setRedBackground() {

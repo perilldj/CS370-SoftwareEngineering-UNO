@@ -12,6 +12,7 @@ public class mainMenu_v2 : MonoBehaviour
 
     public void PlayGame () {
         ClientInfo.isMultiplayer = false;
+        ClientInfo.isHost = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

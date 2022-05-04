@@ -81,7 +81,7 @@ public class Hand {
                     be played to the pile.
     */
 
-    public bool playCard(int cardID) {
+    public bool playCard(int cardID, bool flip) {
 
         if(!canMove)
             return false;
@@ -95,6 +95,9 @@ public class Hand {
             if(card.getCardID() == cardID)
                 break;
         }
+
+        if(flip)
+            card.flipCard();
 
         /* If the move attempt is successful remove it from the hand and make necessary ajustments */
         if(pile.attemptMove(card)) {

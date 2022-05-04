@@ -182,4 +182,8 @@ public class Pile {
         currentClass = class_value;
     }
 
+    public int getCurrentClass() {
+        return currentClass;
+    }
+
 }

@@ -50,6 +50,7 @@ MonoBehaviour:
   - addCardToDrawQueue
   - RPC_ReceivePlayCard
   - RPC_SendPlayCard
+  - RPC_SetInitialMoveID
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

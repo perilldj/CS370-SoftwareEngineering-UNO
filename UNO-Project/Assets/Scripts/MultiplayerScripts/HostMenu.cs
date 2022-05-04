@@ -24,8 +24,7 @@ public class HostMenu : MonoBehaviourPunCallbacks {
         if(!ClientInfo.isHost)
             return;
 
-        if(ClientInfo.numOfPlayers >= 2) {
-            Debug.Log(base.photonView);
+        if(ClientInfo.numOfPlayers >= 2) {;
             string[] names = ClientInfo.playerNames.ToArray();
             ClientInfo.isMultiplayer = true;
             PhotonNetwork.LocalPlayer.NickName = "0";
@@ -69,7 +68,6 @@ public class HostMenu : MonoBehaviourPunCallbacks {
         ClientInfo.numOfPlayers += -1;
         updateText();
         int id = int.Parse(otherPlayer.NickName);
-        Debug.Log("Player: " + ClientInfo.playerNames[id] + " ID: " + id + " left.");
         ClientInfo.playerNames.RemoveAt(id);
         ClientInfo.players.RemoveAt(id);
         for(int i = 0; i < ClientInfo.players.Count; i++) {
@@ -108,7 +106,6 @@ public class HostMenu : MonoBehaviourPunCallbacks {
     [PunRPC]
     public void RPC_SendPlayerName(string name, int id) {
         ClientInfo.playerNames[id] = name;
-        Debug.Log("NAME: " + name + " AT: " + id);
     }
 
     [PunRPC]
@@ -116,7 +113,6 @@ public class HostMenu : MonoBehaviourPunCallbacks {
         string[] nameList = allNames.Split(' ');
         ClientInfo.playerNames.Clear();
         for(int i = 0; i < nameList.Length; i++) {
-            Debug.Log(nameList[i]);
             ClientInfo.playerNames.Add(nameList[i]);
         }
     }

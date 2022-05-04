@@ -227,7 +227,7 @@ public class CardControl : MonoBehaviour {
 
     private void OnMouseDown() {
         if(playEnable)
-            currentHand.playCard(id);
+            currentHand.playCard(id, false);
     }
 
 
