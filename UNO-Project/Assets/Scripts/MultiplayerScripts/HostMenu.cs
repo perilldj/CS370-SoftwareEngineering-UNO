@@ -12,11 +12,13 @@ public class HostMenu : MonoBehaviourPunCallbacks {
     public TMP_Text hostInfo; 
 
     void Start() {
+
         updateText();
         if(ClientInfo.isHost) {
             ClientInfo.players.Add(PhotonNetwork.LocalPlayer);
             ClientInfo.playerNames.Add(ClientInfo.username);
         }
+
     }
 
     public void startGame() {
@@ -115,6 +117,7 @@ public class HostMenu : MonoBehaviourPunCallbacks {
         for(int i = 0; i < nameList.Length; i++) {
             ClientInfo.playerNames.Add(nameList[i]);
         }
+        ClientInfo.numOfPlayers = ClientInfo.playerNames.Count;
     }
 
 }

@@ -12,6 +12,16 @@ public class LobbyControl : MonoBehaviourPunCallbacks {
     public TMP_InputField createInput;
     public TMP_InputField joinInput;
 
+    void Start() {
+
+        ClientInfo.numOfPlayers = 1;
+        ClientInfo.username = "";
+        ClientInfo.roomPassword = "";
+        ClientInfo.playerNames.Clear();
+        ClientInfo.players.Clear();
+
+    }
+
     public void exitLobby() {
         PhotonNetwork.Disconnect();
         SceneManager.LoadScene("Menu_v2");

@@ -153,13 +153,18 @@ public class GameControl : MonoBehaviourPunCallbacks {
 
             playerID = int.Parse(PhotonNetwork.LocalPlayer.NickName);
             int enemyIndex = -1;
-            for(int i = 0; i < ClientInfo.numOfPlayers; i++) {
-                if(i != playerID) {
-                    enemyIndex++;
-                    enemies.Add(new Enemy(enemyPositions[enemyIndex], enemyPrefab, pile, deckScript, this, false));
-                    enemies[enemyIndex].setName(ClientInfo.playerNames[i]);
-                    enemies[enemyIndex].setID(i);
-                }
+            int index = playerID + 1;
+            while (true) {
+                if(index > ClientInfo.playerNames.Count - 1)
+                    index = 0;
+                if(playerID == index)
+                    break;
+                Debug.Log(index);
+                enemyIndex++;
+                enemies.Add(new Enemy(enemyPositions[enemyIndex], enemyPrefab, pile, deckScript, this, false));
+                enemies[enemyIndex].setName(ClientInfo.playerNames[index]);
+                enemies[enemyIndex].setID(index);
+                index++;
             }
 
         } else {
@@ -185,7 +190,6 @@ public class GameControl : MonoBehaviourPunCallbacks {
     private int convertIDToIndex(int id) {
 
         for(int i = 0; i < enemies.Count; i++) {
-            Debug.Log(i);
             if(enemies[i].getID() == id)
                 return i;
         }
