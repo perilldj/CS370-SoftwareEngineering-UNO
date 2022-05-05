@@ -7,6 +7,13 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 
+/*
+
+    public class HostMenu : MonoBehaviourPunCallbacks
+    Author: perilldj
+
+*/
+
 public class HostMenu : MonoBehaviourPunCallbacks {
     
     public TMP_Text hostInfo; 

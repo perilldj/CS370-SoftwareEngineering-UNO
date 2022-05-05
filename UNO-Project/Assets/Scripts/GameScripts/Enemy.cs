@@ -4,6 +4,13 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+/*
+
+    public static class RandomNames
+    Author: perilldj
+
+*/
+
 public static class RandomNames {
     private static List<string> names = new List<string> {"Sophia", "Aiden", "Emma", "Jackson", "Isabella",
                                                           "Olivia", "Liam", "Ava", "Jacob", "Madison", "Noah",
@@ -45,6 +52,13 @@ public static class RandomNames {
     }
 
 }
+
+/*
+
+    public class Enemy
+    Author: perilldj
+
+*/
 
 public class Enemy {
     

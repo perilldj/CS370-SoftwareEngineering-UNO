@@ -5,6 +5,13 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 
+/*
+
+    public class Chat : MonoBehaviourPunCallbacks
+    Author: perilldj
+
+*/
+
 public class Chat : MonoBehaviourPunCallbacks {
     
     public TMP_InputField messageInput;

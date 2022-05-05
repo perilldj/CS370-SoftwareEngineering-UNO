@@ -17,6 +17,13 @@ public static class SoundID {
 
 }
 
+/*
+
+    public class SoundManager : MonoBehaviour
+    Author: perilldj
+
+*/
+
 public class SoundManager : MonoBehaviour {
     
     [SerializeField]

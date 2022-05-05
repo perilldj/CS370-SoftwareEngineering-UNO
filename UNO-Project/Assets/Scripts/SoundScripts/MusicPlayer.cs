@@ -2,8 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MusicPlayer : MonoBehaviour
-{
+/*
+
+    public class MusicPlayer : MonoBehavior
+    Author: perilldj
+
+*/
+
+public class MusicPlayer : MonoBehaviour {
 
     public AudioClip[] clips;
     public AudioSource audioSource;

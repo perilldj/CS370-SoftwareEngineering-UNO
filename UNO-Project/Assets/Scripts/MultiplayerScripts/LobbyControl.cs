@@ -6,6 +6,13 @@ using Photon.Pun;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+/*
+
+    public class LobbyControl : MonoBehaviourPunCallbacks
+    Author: perilldj
+
+*/
+
 public class LobbyControl : MonoBehaviourPunCallbacks {
 
     public TMP_InputField nameInput;
