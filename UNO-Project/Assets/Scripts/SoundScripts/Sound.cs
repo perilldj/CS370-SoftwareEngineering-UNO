@@ -1,6 +1,12 @@
 using UnityEngine.Audio;
 using UnityEngine;
 
+/*
+    Class: Sound
+    Author: perilldj
+    Description: Used to store information about a sound effect.
+*/
+
 [System.Serializable]
 public class Sound {
 

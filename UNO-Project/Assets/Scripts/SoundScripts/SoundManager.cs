@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine.Audio;
 using UnityEngine;
 
+/*
+    Static Class: SoundID
+    Author: perilldj
+    Description: Used to index sounds in the SFX array.
+*/
+
 public static class SoundID {
 
     public const int CARD_HANDLE_ONE = 0;
@@ -18,10 +24,9 @@ public static class SoundID {
 }
 
 /*
-
     public class SoundManager : MonoBehaviour
     Author: perilldj
-
+    Description: Manages the playing of sound effects throughout the game.
 */
 
 public class SoundManager : MonoBehaviour {
@@ -46,6 +51,8 @@ public class SoundManager : MonoBehaviour {
             sound.source.Play();
     }
 
+    /* Used for some variety for the sound of playing a standard card to the deck.
+       Even though it's only two sounds, it sounds a lot more natural than the same one over and over */
     public void playRandomCardSound() {
         playSound(ran.Next(0, 2));
     }

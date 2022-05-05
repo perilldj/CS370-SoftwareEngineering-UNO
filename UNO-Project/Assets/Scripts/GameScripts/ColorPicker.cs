@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColorPicker : MonoBehaviour
-{
+/*
+    Class: ColorPicker
+    Author: perilldj and kourb
+    Description: Script for chosing a color when a +4 or wild card is played.
+*/
+
+public class ColorPicker : MonoBehaviour {
 
     public GameObject gameController;
     public int color;
@@ -12,13 +17,10 @@ public class ColorPicker : MonoBehaviour
 
     public GameObject gameScene;
 
-    // Start is called before the first frame update
     void Start() {
         gameControl = gameController.GetComponent<GameControl>();
         gameControl.addButton(this);
     }
-
-    // Update is called once per frame
 
     void Update() { }
 

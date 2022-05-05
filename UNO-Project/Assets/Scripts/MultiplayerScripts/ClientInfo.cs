@@ -5,7 +5,14 @@ using Photon.Pun;
 using Photon.Realtime;
 
 
-public class ClientInfo : MonoBehaviour {
+/*
+    Class: ClientInfo
+    Author: perilldj
+    Description: Used to hold persistent data across scenes.
+                 Mainly pertains to multiplayer information.
+*/
+
+public class ClientInfo {
     
     public static bool isMultiplayer = false;
     public static bool isHost = false;

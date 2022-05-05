@@ -15,6 +15,8 @@ using Photon.Realtime;
 
 public class GameControl : MonoBehaviourPunCallbacks {
 
+
+    /* Everything required for the game to function */
     [SerializeField]
     private GameObject cardPrefab;
 
@@ -157,7 +159,14 @@ public class GameControl : MonoBehaviourPunCallbacks {
         turnIndicatorText = turnIndicator.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TMP_Text>();
         hidePlayerTurnIndicator();
 
+        /* Generates enemies based on if we are playing in multiplayer or singleplayer */
+
         if(ClientInfo.isMultiplayer) {
+
+            /* When multiplayer is chosen, the enemies need to be created in the right order.
+               Starting at the enemy which would be the next to go in the clockwise manner, ending
+               when we arrive back at the player. This ensures that every player has the order and positioning
+               correct */
 
             playerID = int.Parse(PhotonNetwork.LocalPlayer.NickName);
             int enemyIndex = -1;
@@ -167,7 +176,6 @@ public class GameControl : MonoBehaviourPunCallbacks {
                     index = 0;
                 if(playerID == index)
                     break;
-                Debug.Log(index);
                 enemyIndex++;
                 enemies.Add(new Enemy(enemyPositions[enemyIndex], enemyPrefab, pile, deckScript, this, false));
                 enemies[enemyIndex].setName(ClientInfo.playerNames[index]);
@@ -183,6 +191,7 @@ public class GameControl : MonoBehaviourPunCallbacks {
 
         }
         
+        /* If the player is the MasterClient (The one who created the room) some extra steps need to be done. */
         if(ClientInfo.isHost) {
             StartCoroutine(hostInitializeMultiplayerGame());
             return;
@@ -194,6 +203,14 @@ public class GameControl : MonoBehaviourPunCallbacks {
             StartCoroutine(initializeGame());
         
     }
+
+    /*
+        Method: convertIDToIndex(int id)
+        Description: Provided a player ID, the method returns the index
+                     where the corresponding enemy is located in the enemies[] array
+                     (or alternatively the playerIndex if the id is reffering the local player)
+                     (The player index is always 1 + the amount of enemies)
+    */
 
     private int convertIDToIndex(int id) {
 
@@ -209,6 +226,11 @@ public class GameControl : MonoBehaviourPunCallbacks {
         return -1;
 
     }
+
+    /*
+        Method: convertIndexToID(int index)
+        Description: Opposite effect when compared to convertIDToIndex(int id).
+    */
 
     private int convertIndexToID(int index) {
         if(index == playerIndex)
@@ -230,15 +252,21 @@ public class GameControl : MonoBehaviourPunCallbacks {
         turnIndicatorText.enabled = true;
     }
 
+    /*
+        Method: hostInitializeMultiplayerGame()
+        Description: Does some initial setup for the game and it's players as a whole. 
+    */
+
     private IEnumerator hostInitializeMultiplayerGame() {
 
         playerIndex = ClientInfo.playerNames.Count - 1;
 
+        /* Gives each player the exact same deck */
         yield return new WaitForSeconds(0.1f);
         int id = ran.Next(0, ClientInfo.numOfPlayers);
         base.photonView.RPC("RPC_SetInitialMoveID", RpcTarget.Others, new object[] {id});
         turnIndex = convertIDToIndex(id);
-        for(int i = 0; i < 500; i++) {
+        for(int i = 0; i < 1000; i++) { //There are definitely better ways to do this, but it works.
             Card card = deckScript.drawCard();
             multiplayerDeck.Enqueue(card);
             base.photonView.RPC("addCardToDrawQueue", RpcTarget.Others, new object[] {card.getCardClass(), card.getCardType(), card.getCardID()});
@@ -246,6 +274,7 @@ public class GameControl : MonoBehaviourPunCallbacks {
         
         yield return new WaitForSeconds(2.9f);
 
+        /* Draws cards for every player (locally) */
         int index;
         for(int i = 0; i < ClientInfo.playerNames.Count; i++) {
             index = convertIDToIndex(i);
@@ -264,9 +293,15 @@ public class GameControl : MonoBehaviourPunCallbacks {
             yield return new WaitForSeconds(0.5f);
         }
         
-        StartCoroutine(hostGameLoop());
+        StartCoroutine(hostGameLoop()); //Start of the game
 
     }
+
+    /*
+        Method: initializeMultiplayerGame()
+        Description: Setup required for non host players, just draws the cards for every player locally
+                     after receiving the order of cards from the host.
+    */
 
     private IEnumerator initializeMultiplayerGame() {
 
@@ -274,6 +309,7 @@ public class GameControl : MonoBehaviourPunCallbacks {
     
         playerIndex = ClientInfo.playerNames.Count - 1;
 
+        /* Draws cards for every player (locally) */
         int index;
         for(int i = 0; i < ClientInfo.playerNames.Count; i++) {
             index = convertIDToIndex(i);
@@ -292,9 +328,15 @@ public class GameControl : MonoBehaviourPunCallbacks {
             yield return new WaitForSeconds(0.5f);
         }
 
-        StartCoroutine(multiplayerGameLoop());
+        StartCoroutine(multiplayerGameLoop()); //Start of the game
 
     }
+
+    /*
+        Method: IEnumerator hostGameLoop()
+        Description: Game loop for the host client, in addition to the normal functions, the method manages relaying moves from other players
+                     to everybody to move the game along.
+    */
 
     private IEnumerator hostGameLoop() {
         CardControl playedCard;
@@ -435,6 +477,11 @@ public class GameControl : MonoBehaviourPunCallbacks {
         }
     }
 
+    /*
+        Method: multiplayerGameLoop()
+        Description: Game loop for non-host players.
+    */
+
     private IEnumerator multiplayerGameLoop() {
         CardControl playedCard;
         while(gameEnabled) {
@@ -569,6 +616,11 @@ public class GameControl : MonoBehaviourPunCallbacks {
         }
     }
 
+    /*
+        Method: multiplayerGameLoop()
+        Description: Game loop for signleplayer.
+    */
+
     private IEnumerator initializeGame() {
 
         yield return new WaitForSeconds(2.0f);
@@ -592,6 +644,11 @@ public class GameControl : MonoBehaviourPunCallbacks {
         StartCoroutine(gameLoop());
 
     }
+
+    /*
+        Method: gameLoop()
+        Description: Game loop for singleplayer.
+    */
 
     private IEnumerator gameLoop() {
 
