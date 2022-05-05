@@ -114,6 +114,8 @@ public class GameControl : MonoBehaviourPunCallbacks {
 
         if(ClientInfo.isMultiplayer) {
 
+            numOfOpponents = ClientInfo.numOfPlayers - 1;
+
             firstCard = new Card(-1);
             firstCard.setCardClass(CardTypes.BLUE_CARD);
             firstCard.setCardType(CardTypes.ONE_CARD);
@@ -776,6 +778,10 @@ public class GameControl : MonoBehaviourPunCallbacks {
             directionController.spinClockwise();
             turnDirection = 1;
         }
+
+        if(numOfOpponents == 1)
+            turnIndex += turnDirection;
+
     }
 
     /*
