@@ -34,23 +34,22 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - addCardToDrawQueue
   - ClickRpc
   - DestroyRpc
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
-  - RPC_startGame
-  - RPC_StartGame
-  - RPC_SetNumberOfPlayers
-  - RPC_SetPlayer
   - RPC_Kick
-  - RPC_RequestPlayerName
-  - RPC_SendPlayerName
-  - RPC_SetupPlayers
-  - addCardToDrawQueue
   - RPC_ReceivePlayCard
+  - RPC_RequestPlayerName
   - RPC_SendPlayCard
+  - RPC_SendPlayerName
   - RPC_SetInitialMoveID
+  - RPC_SetNumberOfPlayers
+  - RPC_SetupPlayers
+  - RPC_StartGame
+  - RPC_ReceiveMessage
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

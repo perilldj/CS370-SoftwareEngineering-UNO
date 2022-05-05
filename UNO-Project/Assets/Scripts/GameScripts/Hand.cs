@@ -96,15 +96,17 @@ public class Hand {
                 break;
         }
 
-        if(flip)
-            card.flipCard();
-
         /* If the move attempt is successful remove it from the hand and make necessary ajustments */
         if(pile.attemptMove(card)) {
+
+            if(flip)
+                card.flipCard();
+
             removeCard(index);
             handSize--;
             ajustCardPositions();
             return true;
+            
         }
 
         return false;

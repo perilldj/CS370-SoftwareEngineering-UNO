@@ -4,6 +4,14 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+/*
+
+    public static class RandomNames
+    Author: perilldj
+    Description: Used to provide unique names to the AIs in the singleplayer mode.
+
+*/
+
 public static class RandomNames {
     private static List<string> names = new List<string> {"Sophia", "Aiden", "Emma", "Jackson", "Isabella",
                                                           "Olivia", "Liam", "Ava", "Jacob", "Madison", "Noah",
@@ -21,21 +29,32 @@ public static class RandomNames {
         return false;
     }
 
+    /*
+        Method: clearUsedNames()
+        Description: Clears the array of used names so that names that were previously chosen can be chose again.
+    */
+
     public static void clearUsedNames() {
         usedNames.Clear();
     }
+
+    /*
+        Method: getRandomName()
+        Description: Returns a random name from the above list of names. Will never return the same name twice unless
+                     clearUsedNames() is called.
+    */
 
     public static string getRandomName() {
 
         int randomIndex = ran.Next(0, names.Count);
 
-        int attempts = 25; //Insurance this doesn't get stuck in an infinite loop
+        int attempts = 25; //Insurance so this doesn't get stuck in an infinite loop
         while(attempts > 0) {
             attempts--;
             if(isNameUsed(randomIndex))
                 randomIndex = ran.Next(0, names.Count);
             else {
-                usedNames.Add(randomIndex);
+                usedNames.Add(randomIndex); //Adds chosen name to a list of used names
                 return names[randomIndex];
             }
         }
@@ -45,6 +64,15 @@ public static class RandomNames {
     }
 
 }
+
+/*
+
+    public class Enemy
+    Author: perilldj
+    Description: A representation of an opponent in the game can either be AI controlled or controlled by
+                 another player in multiplayer.
+
+*/
 
 public class Enemy {
     
@@ -107,6 +135,12 @@ public class Enemy {
 
     }
 
+    /*
+        Method: attemptRandomMove()
+        Description: Iterates through each card in the enemy's hand. The first card that can be played legally
+                     will be played through this method.
+    */
+
     public bool attemptRandomMove() {
         
         CardControl card;
@@ -122,6 +156,12 @@ public class Enemy {
         return false;
 
     }
+
+    /*
+        Method: playCard(int cardID)
+        Description: Playes a card to the deck.
+        NOTE: Only called in multiplayer.
+    */
 
     public void playCard(int cardID) {
         hand.setCanMove(true);
