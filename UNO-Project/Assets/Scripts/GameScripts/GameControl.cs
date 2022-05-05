@@ -53,6 +53,9 @@ public class GameControl : MonoBehaviourPunCallbacks {
     private Deck deckScript;
     private Vector2 deckPos = new Vector2(-1.0f, 0.0f);
 
+    [SerializeField]
+    private GameObject chat;
+
     private Queue<Card> multiplayerDeck = new Queue<Card>();
 
     private Pile pile;
@@ -88,6 +91,9 @@ public class GameControl : MonoBehaviourPunCallbacks {
 
     // Start is called before the first frame update
     void Start() {
+
+        if(!ClientInfo.isMultiplayer)
+            Destroy(chat);
 
         Application.runInBackground = true;
 
